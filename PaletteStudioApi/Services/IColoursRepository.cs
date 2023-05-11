@@ -1,6 +1,6 @@
 ﻿using PaletteStudioApi.Models;
 
-namespace PaletteStudioApi.Contracts
+namespace PaletteStudioApi.Services
 {
     public interface IColoursRepository : IGenericRepository<Colour>
     {

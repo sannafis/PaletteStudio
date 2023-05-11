@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PaletteStudioApi.Models.Authentication;
 
-namespace PaletteStudioApi.Contracts
+namespace PaletteStudioApi.Services
 {
     public interface IAuthRepository
     {
@@ -9,5 +9,6 @@ namespace PaletteStudioApi.Contracts
         Task<AuthResponseDto> Login(UserLoginDto loginDto);
         Task<string> CreateRefreshToken();
         Task<AuthResponseDto> VerifyRefreshToken(AuthResponseDto request);
+        Task<bool> UserExists(string email);
     }
 }

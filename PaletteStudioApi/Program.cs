@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using PaletteStudioApi.Models.Authentication;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using PaletteStudioApi.Contracts;
+using PaletteStudioApi.Services;
 using PaletteStudioApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -32,12 +32,6 @@ var connString = builder.Configuration.GetConnectionString("PaletteStudioDbConte
 builder.Services.AddDbContext<PaletteStudioDbContext>(options =>
 {
     options.UseSqlite(connString);
-});
-
-var connStringIdentity = builder.Configuration.GetConnectionString("ApiIdentityDbContext");
-builder.Services.AddDbContext<ApiIdentityDbContext>(options =>
-{
-    options.UseSqlite(connStringIdentity);
 });
 
 builder.Services.AddControllers();
@@ -82,7 +76,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddIdentityCore<User>()
     .AddRoles<IdentityRole>()
     .AddTokenProvider<DataProtectorTokenProvider<User>>("PaletteStudioApi")
-    .AddEntityFrameworkStores<ApiIdentityDbContext>()
+    .AddEntityFrameworkStores<PaletteStudioDbContext>()
     .AddDefaultTokenProviders();
 
 var key = builder.Configuration["JwtSettings:Key"]; // Demo Purposes

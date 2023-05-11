@@ -1,11 +1,17 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PaletteStudioApi.Contracts;
+using PaletteStudioApi.Services;
 using PaletteStudioApi.Data;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models;
+using PaletteStudioApi.Models.Authentication;
 using PaletteStudioApi.Models.Paging;
+using System.Security.Claims;
+using System.Xml.Linq;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace PaletteStudioApi.Repositories
 {
@@ -13,19 +19,26 @@ namespace PaletteStudioApi.Repositories
     {
         private readonly PaletteStudioDbContext _context;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public PalettesRepository(PaletteStudioDbContext context, IMapper mapper) : base(context,mapper)
+        public PalettesRepository(PaletteStudioDbContext context, IMapper mapper, UserManager<User> userManager) : base(context,mapper)
         {
             this._context = context;
             this._mapper = mapper;
+            this._userManager = userManager;
         }
 
-        public async Task<PaletteReadOnlyDto> GetIncludeColours(int id)
+        public async Task<PaletteReadOnlyDto> GetIncludeColours(int id, string userId)
         {
+            var user = await _userManager.FindByIdAsync(userId);
+
             var palette = await _context.Set<Palette>()
                 .Include(p => p.ColourGroups)
                 .ThenInclude(cg => cg.ForegroundColours)
+                .Where(p=>p.UserId!.Equals(user.Id))
                 .FirstOrDefaultAsync(p=>p.Id == id);
+
+            throw new NotFoundException(typeof(Palette).Name, user.Id);
 
             if (palette == null)
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PaletteStudioApi.Models.Authentication;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -11,9 +12,9 @@ namespace PaletteStudioApi.Models
 
         public string? Name { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<ColourGroup> ColourGroups { get; set; } = new HashSet<ColourGroup>();
 
-
+        public string? UserId { get; set; }
+        public User? User { get; set; }
     }
 }

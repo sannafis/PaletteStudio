@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PaletteStudioApi.Contracts;
+using PaletteStudioApi.Services;
 using PaletteStudioApi.Data;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models;

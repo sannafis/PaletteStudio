@@ -9,9 +9,9 @@ namespace PaletteStudioApi.Data.Seeding
         public void Configure(EntityTypeBuilder<Palette> builder)
         {
             builder.HasData(
-                new Palette { Id = 1, Name = "Palette 1" },
-                new Palette { Id = 2, Name = "Palette 2" },
-                new Palette { Id = 3, Name = "Palette 3" }
+                new Palette { Id = 1, Name = "Palette 1", UserId = "354492fe-30eb-4261-b5b1-4a291cb4001d" },
+                new Palette { Id = 2, Name = "Palette 2", UserId = "354492fe-30eb-4261-b5b1-4a291cb4001d" },
+                new Palette { Id = 3, Name = "Palette 3", UserId = "354492fe-30eb-4261-b5b1-4a291cb4001d" }
             );
         }
     }

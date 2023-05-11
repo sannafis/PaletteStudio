@@ -1,6 +1,6 @@
 ﻿using PaletteStudioApi.Models.Paging;
 
-namespace PaletteStudioApi.Contracts
+namespace PaletteStudioApi.Services
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using PaletteStudioApi.Contracts;
+using PaletteStudioApi.Services;
 using PaletteStudioApi.Models.Authentication;
 using PaletteStudioApi.Static;
 using System.IdentityModel.Tokens.Jwt;
@@ -134,6 +134,15 @@ namespace PaletteStudioApi.Repositories
 
             await _userManager.UpdateSecurityStampAsync(_user);
             return null;
+        }
+
+        public async Task<bool> UserExists(string email)
+        {
+            if(await _userManager.FindByEmailAsync(email) != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PaletteStudioApi.Contracts;
+using PaletteStudioApi.Services;
 using PaletteStudioApi.Data;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models;
@@ -19,6 +20,7 @@ namespace PaletteStudioApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class ColoursController : ControllerBase
     {
         private readonly IColoursRepository _coloursRepository;

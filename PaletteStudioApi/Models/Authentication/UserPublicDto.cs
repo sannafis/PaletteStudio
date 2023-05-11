@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace PaletteStudioApi.Models.Authentication
 {
-    public class User : IdentityUser
+    public class UserPublicDto
     {
+        public string Email { get; set; } = string.Empty;
+
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Nickname { get; set; }
 
-        public ICollection<Palette> Palettes { get; set; } = new HashSet<Palette>();
+        public IList<Palette> Palettes { get; set; } = new List<Palette>();
     }
 }

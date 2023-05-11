@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using PaletteStudioApi.Contracts;
+using PaletteStudioApi.Services;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models;
 using PaletteStudioApi.Models.Authentication;
@@ -30,6 +31,7 @@ namespace PaletteStudioApi.Controllers
 
         [HttpPost]
         [Route("register")]
+        [AllowAnonymous]
         public async Task<ActionResult> Register([FromBody] UserDto userDto)
         {
             var errors = await _authRepository.Register(userDto);
@@ -48,6 +50,7 @@ namespace PaletteStudioApi.Controllers
 
         [HttpPost]
         [Route("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthResponseDto>> Login([FromBody] UserLoginDto userDto)
         {
             _logger.LogInformation($"Attempting Login for {userDto.Email}");
@@ -65,6 +68,7 @@ namespace PaletteStudioApi.Controllers
 
         [HttpPost]
         [Route("refreshToken")]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthResponseDto>> RefreshToken([FromBody] AuthResponseDto request)
         {
             var response = await _authRepository.VerifyRefreshToken(request);

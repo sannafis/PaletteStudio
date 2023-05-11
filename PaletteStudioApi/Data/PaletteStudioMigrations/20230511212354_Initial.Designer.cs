@@ -8,10 +8,10 @@ using PaletteStudioApi.Data;
 
 #nullable disable
 
-namespace PaletteStudioApi.Data.ApiIdentityMigrations
+namespace PaletteStudioApi.Data.PaletteStudioMigrations
 {
-    [DbContext(typeof(ApiIdentityDbContext))]
-    [Migration("20230510221657_Initial")]
+    [DbContext(typeof(PaletteStudioDbContext))]
+    [Migration("20230511212354_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,14 +48,14 @@ namespace PaletteStudioApi.Data.ApiIdentityMigrations
                         new
                         {
                             Id = "608616ab-2cb2-4823-9021-b11452f80986",
-                            ConcurrencyStamp = "0ff750d8-0a3b-4565-83f5-d49e3bcd243c",
+                            ConcurrencyStamp = "f22de39a-e1f8-4389-82b5-c65675b137c2",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "0e97e6f5-e05f-43fd-b33f-bdb6ff465658",
-                            ConcurrencyStamp = "2d8520ea-ebd2-4a40-92bb-60a82adb8a92",
+                            ConcurrencyStamp = "e1e2ba67-bf9b-434d-8692-61ee7f6e2845",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -252,7 +252,7 @@ namespace PaletteStudioApi.Data.ApiIdentityMigrations
                         {
                             Id = "dc3fbe21-8f2a-4ac3-9516-91957919b028",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b62e3de1-5015-41b5-86b7-0ee4cbfc9a7f",
+                            ConcurrencyStamp = "a7fbd0d3-1125-4355-a092-5b1bb8a4b324",
                             Email = "admin@palettestudio.ca",
                             EmailConfirmed = true,
                             FirstName = "Palette Studio",
@@ -261,9 +261,9 @@ namespace PaletteStudioApi.Data.ApiIdentityMigrations
                             Nickname = "Admin",
                             NormalizedEmail = "ADMIN@PALETTESTUDIO.CA",
                             NormalizedUserName = "ADMIN@PALETTESTUDIO.CA",
-                            PasswordHash = "AQAAAAEAACcQAAAAENjlOKFcCJRstAlC2oeypzPhulKciJ2a4wsU9U9Mv5PofKX9OyxWA6NI5ijeZvgMIQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENhkO2RoY/sBZ65VpT70uRHYnMH4/XWQmVqVksq+wZXSyOU112CKb3100gdEXEA9Vw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bcbe7af3-b035-4fbd-a9cb-ba36aace2435",
+                            SecurityStamp = "019aeffc-7102-4905-9783-f9e768569fd5",
                             TwoFactorEnabled = false,
                             UserName = "admin@palettestudio.ca"
                         },
@@ -271,7 +271,7 @@ namespace PaletteStudioApi.Data.ApiIdentityMigrations
                         {
                             Id = "354492fe-30eb-4261-b5b1-4a291cb4001d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "41a4f717-43b3-4a03-893c-d848c8daa4f0",
+                            ConcurrencyStamp = "12c15a62-3d06-41c9-aaa4-11197d3a4d0a",
                             Email = "user@palettestudio.ca",
                             EmailConfirmed = true,
                             FirstName = "Palette Studio",
@@ -280,11 +280,244 @@ namespace PaletteStudioApi.Data.ApiIdentityMigrations
                             Nickname = "Test User",
                             NormalizedEmail = "USER@PALETTESTUDIO.CA",
                             NormalizedUserName = "USER@PALETTESTUDIO.CA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEH6ioXthWnUunf4S8nmeDFJr1nNNRkRqeDVwBoFMbH8Kjb7ZR+f3zx1GEOsyAEZo8Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEG05NyBbf0ng7GqjLsf5PB8zUSv5p1gQbvJWkfMs7C3OCJiXoFaO65F2lDzam8F/uQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c7e93ac6-30ad-4f12-a5e5-886e3c4cc25c",
+                            SecurityStamp = "63df3332-ddb3-41b3-b10a-f9622881319f",
                             TwoFactorEnabled = false,
                             UserName = "user@palettestudio.ca"
+                        });
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.Colour", b =>
+                {
+                    b.Property<string>("HexCode")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("HexCode");
+
+                    b.ToTable("Colours");
+
+                    b.HasData(
+                        new
+                        {
+                            HexCode = "#000000"
+                        },
+                        new
+                        {
+                            HexCode = "#FFFFFF"
+                        },
+                        new
+                        {
+                            HexCode = "#9B111E"
+                        },
+                        new
+                        {
+                            HexCode = "#89AC76"
+                        },
+                        new
+                        {
+                            HexCode = "#F3A505"
+                        },
+                        new
+                        {
+                            HexCode = "#5D9B9B"
+                        },
+                        new
+                        {
+                            HexCode = "#4C9141"
+                        },
+                        new
+                        {
+                            HexCode = "#B44C43"
+                        },
+                        new
+                        {
+                            HexCode = "#3E5F8A"
+                        },
+                        new
+                        {
+                            HexCode = "#F80000"
+                        },
+                        new
+                        {
+                            HexCode = "#8B8C7A"
+                        });
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.ColourGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BackgroundColourHexCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PaletteId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BackgroundColourHexCode");
+
+                    b.HasIndex("PaletteId");
+
+                    b.ToTable("ColourGroups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BackgroundColourHexCode = "#FFFFFF",
+                            PaletteId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BackgroundColourHexCode = "#F3A505",
+                            PaletteId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BackgroundColourHexCode = "#F80000",
+                            PaletteId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BackgroundColourHexCode = "#000000",
+                            PaletteId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BackgroundColourHexCode = "#8B8C7A",
+                            PaletteId = 3
+                        });
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.ForegroundColour", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ColourGroupId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ColourHexCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ColourGroupId");
+
+                    b.HasIndex("ColourHexCode");
+
+                    b.ToTable("ForegroundColours");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ColourGroupId = 1,
+                            ColourHexCode = "#9B111E"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ColourGroupId = 1,
+                            ColourHexCode = "#F80000"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ColourGroupId = 1,
+                            ColourHexCode = "#8B8C7A"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ColourGroupId = 1,
+                            ColourHexCode = "#4C9141"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ColourGroupId = 3,
+                            ColourHexCode = "#B44C43"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ColourGroupId = 3,
+                            ColourHexCode = "#000000"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ColourGroupId = 3,
+                            ColourHexCode = "#F3A505"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ColourGroupId = 4,
+                            ColourHexCode = "#3E5F8A"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ColourGroupId = 4,
+                            ColourHexCode = "#F3A505"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ColourGroupId = 5,
+                            ColourHexCode = "#9B111E"
+                        });
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.Palette", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Palettes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Palette 1",
+                            UserId = "dc3fbe21-8f2a-4ac3-9516-91957919b028"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Palette 2",
+                            UserId = "dc3fbe21-8f2a-4ac3-9516-91957919b028"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Palette 3",
+                            UserId = "dc3fbe21-8f2a-4ac3-9516-91957919b028"
                         });
                 });
 
@@ -337,6 +570,75 @@ namespace PaletteStudioApi.Data.ApiIdentityMigrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.ColourGroup", b =>
+                {
+                    b.HasOne("PaletteStudioApi.Models.Colour", "BackgroundColour")
+                        .WithMany("ColourGroups")
+                        .HasForeignKey("BackgroundColourHexCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaletteStudioApi.Models.Palette", "Palette")
+                        .WithMany("ColourGroups")
+                        .HasForeignKey("PaletteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BackgroundColour");
+
+                    b.Navigation("Palette");
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.ForegroundColour", b =>
+                {
+                    b.HasOne("PaletteStudioApi.Models.ColourGroup", "ColourGroup")
+                        .WithMany("ForegroundColours")
+                        .HasForeignKey("ColourGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaletteStudioApi.Models.Colour", "Colour")
+                        .WithMany("ForegroundColours")
+                        .HasForeignKey("ColourHexCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Colour");
+
+                    b.Navigation("ColourGroup");
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.Palette", b =>
+                {
+                    b.HasOne("PaletteStudioApi.Models.Authentication.User", "User")
+                        .WithMany("Palettes")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.Authentication.User", b =>
+                {
+                    b.Navigation("Palettes");
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.Colour", b =>
+                {
+                    b.Navigation("ColourGroups");
+
+                    b.Navigation("ForegroundColours");
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.ColourGroup", b =>
+                {
+                    b.Navigation("ForegroundColours");
+                });
+
+            modelBuilder.Entity("PaletteStudioApi.Models.Palette", b =>
+                {
+                    b.Navigation("ColourGroups");
                 });
 #pragma warning restore 612, 618
         }

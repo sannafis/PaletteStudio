@@ -41,20 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ColourLibrary\ColourLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="apiIdentity.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="palleteStudio.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="palleteStudio.db-shm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

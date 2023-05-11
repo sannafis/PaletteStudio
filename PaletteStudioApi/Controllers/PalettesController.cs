@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PaletteStudioApi.Contracts;
+using PaletteStudioApi.Services;
 using PaletteStudioApi.Data;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models;
 using PaletteStudioApi.Models.Paging;
 using PaletteStudioApi.Static;
+using System.Security.Claims;
 
 namespace PaletteStudioApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PalettesController : ControllerBase
     {
         private readonly ILogger<PalettesController> _logger;
@@ -52,8 +55,15 @@ namespace PaletteStudioApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PaletteReadOnlyDto>> GetPalette(int id)
         {
+            string userId = HttpContext.User.FindFirstValue("uid");
+
+            if (userId == null)
+            {
+                throw new UnauthorizedException(nameof(GetPalette), "(User not found)");
+            }
+
             _logger.LogInformation($"Request to {nameof(GetPalette)}");
-            var paletteDto = await _palettesRepository.GetIncludeColours(id);
+            var paletteDto = await _palettesRepository.GetIncludeColours(id, userId);
             return Ok(paletteDto);
         }
 

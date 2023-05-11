@@ -10,7 +10,7 @@ using PaletteStudioApi.Data.Seeding;
 
 namespace PaletteStudioApi.Data
 {
-    public class PaletteStudioDbContext : DbContext
+    public class PaletteStudioDbContext : IdentityDbContext<User>
     {
 
         public PaletteStudioDbContext(DbContextOptions<PaletteStudioDbContext> options)
@@ -18,9 +18,6 @@ namespace PaletteStudioApi.Data
         {
         }
 
-        //public DbSet<User> Users { get; set; }
-        //public DbSet<RefreshToken> RefreshTokens { get; set; }
-        //public DbSet<Project> Projects { get; set; }
         public DbSet<Palette> Palettes { get; set; }
         public DbSet<Colour> Colours { get; set; }
         public DbSet<ColourGroup> ColourGroups { get; set; }
@@ -28,9 +25,16 @@ namespace PaletteStudioApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>()
+            .HasMany(u => u.Palettes)
+            .WithOne(p => p.User)
+            .HasForeignKey(r => r.UserId);
 
-            // modelBuilder.Entity<RefreshToken>().HasNoKey();
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountConfiguration());
+            modelBuilder.ApplyConfiguration(new IdentityUserRoleConfiguration());
 
             modelBuilder.Entity<Colour>().HasKey(c => c.HexCode);
 
@@ -54,18 +58,11 @@ namespace PaletteStudioApi.Data
                 .WithOne(f => f.Colour)
                 .HasForeignKey(f => f.ColourHexCode);
 
+
             modelBuilder.ApplyConfiguration(new ColoursConfiguration());
             modelBuilder.ApplyConfiguration(new PaletteConfiguration());
             modelBuilder.ApplyConfiguration(new ColourGroupConfiguration());
             modelBuilder.ApplyConfiguration(new ForegroundColourConfiguration());
-
-            //modelBuilder.Entity<User>()
-            //.HasOne<RefreshToken>(s => s.RefreshToken)
-            //.WithOne(ad => ad.User)
-            //.HasForeignKey<RefreshToken>(r=>r.UserId);
-
         }
     }
-
-
 }

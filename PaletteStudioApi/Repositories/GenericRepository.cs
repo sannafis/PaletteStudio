@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PaletteStudioApi.Contracts;
+using PaletteStudioApi.Services;
 using PaletteStudioApi.Data;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models.Paging;
+using System.Security.Claims;
 
 namespace PaletteStudioApi.Repositories
 {
@@ -20,6 +22,7 @@ namespace PaletteStudioApi.Repositories
         }
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
+            
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity;

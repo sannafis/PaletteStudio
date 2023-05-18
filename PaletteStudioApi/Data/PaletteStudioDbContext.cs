@@ -18,7 +18,7 @@ namespace PaletteStudioApi.Data
         {
         }
 
-        public DbSet<Palette> Palettes { get; set; }
+        public DbSet<Palette> Palettes { get; set; } 
         public DbSet<Colour> Colours { get; set; }
         public DbSet<ColourGroup> ColourGroups { get; set; }
         public DbSet<ForegroundColour> ForegroundColours { get; set; }

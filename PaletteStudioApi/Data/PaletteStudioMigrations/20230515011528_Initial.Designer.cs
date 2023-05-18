@@ -11,7 +11,7 @@ using PaletteStudioApi.Data;
 namespace PaletteStudioApi.Data.PaletteStudioMigrations
 {
     [DbContext(typeof(PaletteStudioDbContext))]
-    [Migration("20230511212354_Initial")]
+    [Migration("20230515011528_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,14 +48,14 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         new
                         {
                             Id = "608616ab-2cb2-4823-9021-b11452f80986",
-                            ConcurrencyStamp = "f22de39a-e1f8-4389-82b5-c65675b137c2",
+                            ConcurrencyStamp = "6e22e3f8-bb05-462e-acf1-4522eb226e53",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "0e97e6f5-e05f-43fd-b33f-bdb6ff465658",
-                            ConcurrencyStamp = "e1e2ba67-bf9b-434d-8692-61ee7f6e2845",
+                            ConcurrencyStamp = "9faab77f-5aa8-4d18-9691-266c3aec6ad3",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -252,7 +252,7 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         {
                             Id = "dc3fbe21-8f2a-4ac3-9516-91957919b028",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a7fbd0d3-1125-4355-a092-5b1bb8a4b324",
+                            ConcurrencyStamp = "e4eb65f5-21f0-435e-baee-c335a1f9e3a7",
                             Email = "admin@palettestudio.ca",
                             EmailConfirmed = true,
                             FirstName = "Palette Studio",
@@ -261,9 +261,9 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                             Nickname = "Admin",
                             NormalizedEmail = "ADMIN@PALETTESTUDIO.CA",
                             NormalizedUserName = "ADMIN@PALETTESTUDIO.CA",
-                            PasswordHash = "AQAAAAEAACcQAAAAENhkO2RoY/sBZ65VpT70uRHYnMH4/XWQmVqVksq+wZXSyOU112CKb3100gdEXEA9Vw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPOguBI1oNotTAorFqt+LUoM40pieunhExEnCGIbVLLoGvGQjKctckM7V6vxY4gdZA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "019aeffc-7102-4905-9783-f9e768569fd5",
+                            SecurityStamp = "ce111549-771f-4a90-9647-bf43c73e222b",
                             TwoFactorEnabled = false,
                             UserName = "admin@palettestudio.ca"
                         },
@@ -271,7 +271,7 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         {
                             Id = "354492fe-30eb-4261-b5b1-4a291cb4001d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "12c15a62-3d06-41c9-aaa4-11197d3a4d0a",
+                            ConcurrencyStamp = "a8c91896-886f-4d0c-a4eb-51de83fcfd90",
                             Email = "user@palettestudio.ca",
                             EmailConfirmed = true,
                             FirstName = "Palette Studio",
@@ -280,9 +280,9 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                             Nickname = "Test User",
                             NormalizedEmail = "USER@PALETTESTUDIO.CA",
                             NormalizedUserName = "USER@PALETTESTUDIO.CA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG05NyBbf0ng7GqjLsf5PB8zUSv5p1gQbvJWkfMs7C3OCJiXoFaO65F2lDzam8F/uQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEApvd943UGqbyvc3JgFd+uKNO7c8uMlgrV/9RLgg90OWx7hBPq2xuXWGb7ugapd8HA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "63df3332-ddb3-41b3-b10a-f9622881319f",
+                            SecurityStamp = "07ea4d9b-7fd5-4fbb-b38e-fcd5133b494b",
                             TwoFactorEnabled = false,
                             UserName = "user@palettestudio.ca"
                         });
@@ -491,6 +491,10 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Privacy")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
@@ -505,19 +509,22 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         {
                             Id = 1,
                             Name = "Palette 1",
-                            UserId = "dc3fbe21-8f2a-4ac3-9516-91957919b028"
+                            Privacy = "public",
+                            UserId = "354492fe-30eb-4261-b5b1-4a291cb4001d"
                         },
                         new
                         {
                             Id = 2,
                             Name = "Palette 2",
-                            UserId = "dc3fbe21-8f2a-4ac3-9516-91957919b028"
+                            Privacy = "private",
+                            UserId = "354492fe-30eb-4261-b5b1-4a291cb4001d"
                         },
                         new
                         {
                             Id = 3,
                             Name = "Palette 3",
-                            UserId = "dc3fbe21-8f2a-4ac3-9516-91957919b028"
+                            Privacy = "private",
+                            UserId = "354492fe-30eb-4261-b5b1-4a291cb4001d"
                         });
                 });
 

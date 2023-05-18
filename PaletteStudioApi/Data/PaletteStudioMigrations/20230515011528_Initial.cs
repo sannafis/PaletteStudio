@@ -175,6 +175,7 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Privacy = table.Column<string>(type: "TEXT", nullable: false),
                     UserId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -242,22 +243,22 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0e97e6f5-e05f-43fd-b33f-bdb6ff465658", "e1e2ba67-bf9b-434d-8692-61ee7f6e2845", "Administrator", "ADMINISTRATOR" });
+                values: new object[] { "0e97e6f5-e05f-43fd-b33f-bdb6ff465658", "9faab77f-5aa8-4d18-9691-266c3aec6ad3", "Administrator", "ADMINISTRATOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "608616ab-2cb2-4823-9021-b11452f80986", "f22de39a-e1f8-4389-82b5-c65675b137c2", "User", "USER" });
+                values: new object[] { "608616ab-2cb2-4823-9021-b11452f80986", "6e22e3f8-bb05-462e-acf1-4522eb226e53", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "Nickname", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "354492fe-30eb-4261-b5b1-4a291cb4001d", 0, "12c15a62-3d06-41c9-aaa4-11197d3a4d0a", "user@palettestudio.ca", true, "Palette Studio", "User", false, null, "Test User", "USER@PALETTESTUDIO.CA", "USER@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEG05NyBbf0ng7GqjLsf5PB8zUSv5p1gQbvJWkfMs7C3OCJiXoFaO65F2lDzam8F/uQ==", null, false, "63df3332-ddb3-41b3-b10a-f9622881319f", false, "user@palettestudio.ca" });
+                values: new object[] { "354492fe-30eb-4261-b5b1-4a291cb4001d", 0, "a8c91896-886f-4d0c-a4eb-51de83fcfd90", "user@palettestudio.ca", true, "Palette Studio", "User", false, null, "Test User", "USER@PALETTESTUDIO.CA", "USER@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEApvd943UGqbyvc3JgFd+uKNO7c8uMlgrV/9RLgg90OWx7hBPq2xuXWGb7ugapd8HA==", null, false, "07ea4d9b-7fd5-4fbb-b38e-fcd5133b494b", false, "user@palettestudio.ca" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "Nickname", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dc3fbe21-8f2a-4ac3-9516-91957919b028", 0, "a7fbd0d3-1125-4355-a092-5b1bb8a4b324", "admin@palettestudio.ca", true, "Palette Studio", "Admin", false, null, "Admin", "ADMIN@PALETTESTUDIO.CA", "ADMIN@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAENhkO2RoY/sBZ65VpT70uRHYnMH4/XWQmVqVksq+wZXSyOU112CKb3100gdEXEA9Vw==", null, false, "019aeffc-7102-4905-9783-f9e768569fd5", false, "admin@palettestudio.ca" });
+                values: new object[] { "dc3fbe21-8f2a-4ac3-9516-91957919b028", 0, "e4eb65f5-21f0-435e-baee-c335a1f9e3a7", "admin@palettestudio.ca", true, "Palette Studio", "Admin", false, null, "Admin", "ADMIN@PALETTESTUDIO.CA", "ADMIN@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEPOguBI1oNotTAorFqt+LUoM40pieunhExEnCGIbVLLoGvGQjKctckM7V6vxY4gdZA==", null, false, "ce111549-771f-4a90-9647-bf43c73e222b", false, "admin@palettestudio.ca" });
 
             migrationBuilder.InsertData(
                 table: "Colours",
@@ -326,18 +327,18 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
 
             migrationBuilder.InsertData(
                 table: "Palettes",
-                columns: new[] { "Id", "Name", "UserId" },
-                values: new object[] { 1, "Palette 1", "dc3fbe21-8f2a-4ac3-9516-91957919b028" });
+                columns: new[] { "Id", "Name", "Privacy", "UserId" },
+                values: new object[] { 1, "Palette 1", "public", "354492fe-30eb-4261-b5b1-4a291cb4001d" });
 
             migrationBuilder.InsertData(
                 table: "Palettes",
-                columns: new[] { "Id", "Name", "UserId" },
-                values: new object[] { 2, "Palette 2", "dc3fbe21-8f2a-4ac3-9516-91957919b028" });
+                columns: new[] { "Id", "Name", "Privacy", "UserId" },
+                values: new object[] { 2, "Palette 2", "private", "354492fe-30eb-4261-b5b1-4a291cb4001d" });
 
             migrationBuilder.InsertData(
                 table: "Palettes",
-                columns: new[] { "Id", "Name", "UserId" },
-                values: new object[] { 3, "Palette 3", "dc3fbe21-8f2a-4ac3-9516-91957919b028" });
+                columns: new[] { "Id", "Name", "Privacy", "UserId" },
+                values: new object[] { 3, "Palette 3", "private", "354492fe-30eb-4261-b5b1-4a291cb4001d" });
 
             migrationBuilder.InsertData(
                 table: "ColourGroups",

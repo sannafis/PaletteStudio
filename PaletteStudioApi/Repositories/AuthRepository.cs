@@ -8,6 +8,7 @@ using PaletteStudioApi.Static;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using PaletteStudioApi.Exceptions;
 
 namespace PaletteStudioApi.Repositories
 {
@@ -17,25 +18,27 @@ namespace PaletteStudioApi.Repositories
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _environment;
-        private User _user;
+        private readonly IHttpContextAccessor _httpContext;
+        private User? _user;
 
         private const string _provider = "PaletteStudioApi";
         private const string _refreshToken = "RefreshToken";
 
-        public AuthRepository(IMapper mapper, UserManager<User> userManager, IConfiguration configuration, IWebHostEnvironment environment)
+        public AuthRepository(IMapper mapper, UserManager<User> userManager, IConfiguration configuration, IWebHostEnvironment environment, IHttpContextAccessor httpContext)
         {
             this._mapper = mapper;
             this._userManager = userManager;
             this._configuration = configuration;
             this._environment = environment;
+            this._httpContext = httpContext;
         }
 
         public async Task<string> CreateRefreshToken()
         {
-            await _userManager.RemoveAuthenticationTokenAsync(_user, _provider, _refreshToken);
-            var refreshToken = await _userManager.GenerateUserTokenAsync(_user, _provider, _refreshToken);
+            await _userManager.RemoveAuthenticationTokenAsync(_user!, _provider, _refreshToken);
+            var refreshToken = await _userManager.GenerateUserTokenAsync(_user!, _provider, _refreshToken);
 
-            var result = _userManager.SetAuthenticationTokenAsync(_user, _provider, _refreshToken, refreshToken);
+            var result = _userManager.SetAuthenticationTokenAsync(_user!, _provider, _refreshToken, refreshToken);
 
             return refreshToken;
         }
@@ -51,12 +54,12 @@ namespace PaletteStudioApi.Repositories
             }
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var roles = await _userManager.GetRolesAsync(_user);
+            var roles = await _userManager.GetRolesAsync(_user!);
             var roleClaims = roles.Select(q => new Claim(ClaimTypes.Role, q)).ToList();
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub,_user.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub,_user!.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, _user.Email),
                 new Claim(CustomClaimTypes.Uid, _user.Id)
@@ -143,6 +146,18 @@ namespace PaletteStudioApi.Repositories
                 return true;
             }
             return false;
+        }
+
+        public async Task<string> CurrentUser()
+        {
+            // get current user id from token
+            var userId = _httpContext.HttpContext.User.FindFirstValue("uid");
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                throw new UnauthorizedException(nameof(User), "(Not a valid Id)");
+            }
+            return userId;
         }
     }
 }

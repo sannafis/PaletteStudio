@@ -4,18 +4,51 @@ using PaletteStudioApi.Services;
 using PaletteStudioApi.Data;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models;
+using AutoMapper.QueryableExtensions;
+using PaletteStudioApi.Models.Paging;
 
 namespace PaletteStudioApi.Repositories
 {
-    public class ColoursRepository : GenericRepository<Colour>, IColoursRepository
+    public class ColoursRepository : IColoursRepository
     {
         private readonly PaletteStudioDbContext _context;
         private readonly IMapper _mapper;
 
-        public ColoursRepository(PaletteStudioDbContext context, IMapper mapper) : base(context, mapper)
+        public ColoursRepository(PaletteStudioDbContext context, IMapper mapper)
         {
             this._context = context;
             this._mapper = mapper;
+        }
+
+        public async Task<List<ColourDto>> GetAllAsync()
+        {
+            var colours = await _context.Set<Colour>()
+                .ProjectTo<ColourDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return colours;
+        }
+
+        public async Task<PagedData<ColourDto>> GetAllPagedAsync(PagingParameters pagingParameters)
+        {
+            // get total size of data list
+            var totalSize = await _context.Set<Colour>()
+                .CountAsync();
+
+            // get items with paging parameters
+            var colours = await _context.Set<Colour>()
+                .Skip(pagingParameters.StartIndex)
+                .Take(pagingParameters.PageSize)
+                .ProjectTo<ColourDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return new PagedData<ColourDto>
+            {
+                Items = colours,
+                PageNumber = pagingParameters.StartIndex,
+                RecordNumber = pagingParameters.PageSize,
+                TotalCount = totalSize
+            };
         }
 
         public async Task<ColourDto> CreateNormalizedAsync(ColourDto colour)

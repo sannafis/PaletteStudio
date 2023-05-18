@@ -10,5 +10,6 @@ namespace PaletteStudioApi.Services
         Task<string> CreateRefreshToken();
         Task<AuthResponseDto> VerifyRefreshToken(AuthResponseDto request);
         Task<bool> UserExists(string email);
+        Task<string> CurrentUser();
     }
 }

@@ -33,21 +33,40 @@ namespace PaletteStudioApi.Controllers
             this._coloursRepository = coloursRepository;
         }
 
+        // GET: api/Palettes/GetAllPublic
+        [HttpGet("GetAllPublic")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<PaletteReadOnlyDto>>> GetPublicPalettes()
+        {
+            _logger.LogInformation($"Request to {nameof(GetPublicPalettes)}");
+            var paletteDtos = await _palettesRepository.PublicGetAllAsync();
+            return Ok(paletteDtos);
+        }
+
+        // GET: api/Palettes/?StartIndex=0&pageSize=15&PageNumber=1
+        [HttpGet("GetAllPublicPaged")]
+        public async Task<ActionResult<PagedData<PaletteReadOnlyDto>>> GetPublicPagedPalettes([FromQuery] PagingParameters pagingParameters)
+        {
+            _logger.LogInformation($"Request to {nameof(GetPublicPagedPalettes)}");
+            var pagedPalettes = await _palettesRepository.PublicGetAllPagedAsync(pagingParameters);
+            return Ok(pagedPalettes);
+        }
+        
         // GET: api/Palettes/GetAll
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<PaletteReadOnlyDto>>> GetPalettes()
         {
             _logger.LogInformation($"Request to {nameof(GetPalettes)}");
-            var paletteDtos = await _palettesRepository.GetAllIncludeColours();
+            var paletteDtos = await _palettesRepository.GetAllIncludeColoursAsync();
             return Ok(paletteDtos);
         }
 
         // GET: api/Palettes/?StartIndex=0&pageSize=15&PageNumber=1
-        [HttpGet]
+        [HttpGet("GetAllPaged")]
         public async Task<ActionResult<PagedData<PaletteReadOnlyDto>>> GetPagedPalettes([FromQuery] PagingParameters pagingParameters)
         {
             _logger.LogInformation($"Request to {nameof(GetPagedPalettes)}");
-            var pagedPalettes = await _palettesRepository.GetAllPagedIncludeColours(pagingParameters);
+            var pagedPalettes = await _palettesRepository.GetAllPagedIncludeColoursAsync(pagingParameters);
             return Ok(pagedPalettes);
         }
 
@@ -55,15 +74,8 @@ namespace PaletteStudioApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PaletteReadOnlyDto>> GetPalette(int id)
         {
-            string userId = HttpContext.User.FindFirstValue("uid");
-
-            if (userId == null)
-            {
-                throw new UnauthorizedException(nameof(GetPalette), "(User not found)");
-            }
-
             _logger.LogInformation($"Request to {nameof(GetPalette)}");
-            var paletteDto = await _palettesRepository.GetIncludeColours(id, userId);
+            var paletteDto = await _palettesRepository.GetIncludeColoursAsync(id);
             return Ok(paletteDto);
         }
 
@@ -135,7 +147,7 @@ namespace PaletteStudioApi.Controllers
                 }
             }
 
-            var palette = await _palettesRepository.CreateAsync<PaletteCreateDto, PaletteReadOnlyDto>(paletteDto);
+            var palette = await _palettesRepository.CreateAsync(paletteDto);
 
             return CreatedAtAction(nameof(GetPalette), new { id = palette.Id }, palette);
         }

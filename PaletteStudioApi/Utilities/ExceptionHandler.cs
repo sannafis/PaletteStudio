@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MailKit.Security;
+using Newtonsoft.Json;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Static;
 using System.Net;
@@ -53,6 +54,10 @@ namespace PaletteStudioApi.Utilities
                 case UnauthorizedException unauthorizedException:
                     statusCode = HttpStatusCode.Unauthorized;
                     errorDetails.ErrorType = ErrorType.Unauthorized;
+                    break;
+                case AuthenticationException authenticationException:
+                    statusCode = HttpStatusCode.NetworkAuthenticationRequired;
+                    errorDetails.ErrorType = ErrorType.Unauthenticated;
                     break;
                 default:
                     break;

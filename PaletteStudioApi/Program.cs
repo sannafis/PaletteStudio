@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 using System.Security.Policy;
 using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,9 @@ builder.Services.AddDbContext<PaletteStudioDbContext>(options =>
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -107,7 +111,6 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IPalettesRepository, PalettesRepository>();
 builder.Services.AddScoped<IColoursRepository, ColoursRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();

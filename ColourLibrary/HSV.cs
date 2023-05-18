@@ -48,6 +48,11 @@ namespace ColourLibrary
             this.H = h;
             this.S = s;
             this.V = v;
-        }   
+        }
+
+        public override string ToString()
+        {
+            return $"hsv({this.H},{this.S},{this.V})";
+        }
     }
 }

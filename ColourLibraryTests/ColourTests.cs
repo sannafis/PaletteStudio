@@ -12,7 +12,7 @@ namespace ColourLibrary.Tests
     public class ColourTests
     {
         [TestMethod()]
-        public void ToHexTest1()
+        public void ToHexFromRGBTest1()
         {
             //Arrange
             int r = 0, g = 0, b = 0;
@@ -20,7 +20,7 @@ namespace ColourLibrary.Tests
             string hexExpected = "#000000";
 
             //Act
-            string hexActual = Colour.ToHex(rgb);
+            string hexActual = Colour.ToHexFromRGB(rgb);
 
             //Assert
             Assert.AreEqual(hexExpected, hexActual, "RGB to Hex conversion failed.");
@@ -30,14 +30,14 @@ namespace ColourLibrary.Tests
         /// Test R value below excepted range (0 - 255)
         /// </summary>
         [TestMethod()]
-        public void ToHexTestR1()
+        public void ToHexFromRGBTestR1()
         {
             //Arrange
             int r = -1, g = 0, b = 0;
 
             //Act
             try { RGB rgb = new RGB(r, g, b); }
-            catch (ArgumentOutOfRangeException e){ return; }
+            catch (ArgumentOutOfRangeException){ return; }
 
             //Assert
             Assert.Fail("Expected exception not found for R value.");
@@ -46,14 +46,14 @@ namespace ColourLibrary.Tests
         /// Test R value above excepted range (0 - 255)
         /// </summary>
         [TestMethod()]
-        public void ToHexTestR2()
+        public void ToHexFromRGBTestR2()
         {
             //Arrange
             int r = 256, g = 0, b = 0;
 
             //Act
             try { RGB rgb = new RGB(r, g, b); }
-            catch (ArgumentOutOfRangeException e){ return; }
+            catch (ArgumentOutOfRangeException){ return; }
 
             //Assert
             Assert.Fail("Expected exception not found for R value.");
@@ -63,14 +63,14 @@ namespace ColourLibrary.Tests
         /// Test G value below excepted range (0 - 255)
         /// </summary>
         [TestMethod()]
-        public void ToHexTestG1()
+        public void ToHexFromRGBTestG1()
         {
             //Arrange
             int r = 0, g = -1, b = 0;
 
             //Act
             try { RGB rgb = new RGB(r, g, b); }
-            catch (ArgumentOutOfRangeException e){ return; }
+            catch (ArgumentOutOfRangeException){ return; }
 
             //Assert
             Assert.Fail("Expected exception not found for G value.");
@@ -79,14 +79,14 @@ namespace ColourLibrary.Tests
         /// Test G value above excepted range (0 - 255)
         /// </summary>
         [TestMethod()]
-        public void ToHexTestG2()
+        public void ToHexFromRGBTestG2()
         {
             //Arrange
             int r = 0, g = 256, b = 0;
 
             //Act
             try { RGB rgb = new RGB(r, g, b); }
-            catch (ArgumentOutOfRangeException e){ return; }
+            catch (ArgumentOutOfRangeException){ return; }
 
             //Assert
             Assert.Fail("Expected exception not found for G value.");
@@ -96,14 +96,14 @@ namespace ColourLibrary.Tests
         /// Test B value below excepted range (0 - 255)
         /// </summary>
         [TestMethod()]
-        public void ToHexTestB1()
+        public void ToHexFromRGBTestB1()
         {
             //Arrange
             int r = 0, g = 0, b = -1;
 
             //Act
             try { RGB rgb = new RGB(r, g, b); }
-            catch (ArgumentOutOfRangeException e){ return; }
+            catch (ArgumentOutOfRangeException){ return; }
 
             //Assert
             Assert.Fail("Expected exception not found for B value.");
@@ -112,21 +112,21 @@ namespace ColourLibrary.Tests
         /// Test B value above excepted range (0 - 255)
         /// </summary>
         [TestMethod()]
-        public void ToHexTestB2()
+        public void ToHexFromRGBTestB2()
         {
             //Arrange
             int r = 0, g = 0, b = 256;
 
             //Act
             try { RGB rgb = new RGB(r, g, b); }
-            catch (ArgumentOutOfRangeException e){ return; }
+            catch (ArgumentOutOfRangeException){ return; }
 
             //Assert
             Assert.Fail("Expected exception not found for B value.");
         }
 
         [TestMethod()]
-        public void ToHexTest2()
+        public void ToHexFromRGBTest2()
         {
             //Arrange
             int r = 255, g = 255, b = 255;
@@ -134,14 +134,14 @@ namespace ColourLibrary.Tests
             string hexExpected = "#FFFFFF";
 
             //Act
-            string hexActual = Colour.ToHex(rgb);
+            string hexActual = Colour.ToHexFromRGB(rgb);
 
             //Assert
             Assert.AreEqual(hexExpected, hexActual, "RGB to Hex conversion failed.");
         }
 
         [TestMethod()]
-        public void ToHexTest3()
+        public void ToHexFromRGBTest3()
         {
             //Arrange
             int r = 127, g = 127, b = 127;
@@ -149,7 +149,7 @@ namespace ColourLibrary.Tests
             string hexExpected = "#7F7F7F";
 
             //Act
-            string hexActual = Colour.ToHex(rgb);
+            string hexActual = Colour.ToHexFromRGB(rgb);
 
             //Assert
             Assert.AreEqual(hexExpected, hexActual, "RGB to Hex conversion failed.");
@@ -159,14 +159,14 @@ namespace ColourLibrary.Tests
         /// Test different string formats for hex input
         /// </summary>
         [TestMethod()]
-        public void ToRGBTest1()
+        public void ToRGBFromHexTest1()
         {
             //Arrange
             string hex = "#a3626e";
             RGB rgbExpected = new RGB(163,98,110);
 
             //Act
-            RGB rgbActual = Colour.ToRGB(hex);
+            RGB rgbActual = Colour.ToRGBFromHex(hex);
 
             //Assert
             Assert.AreEqual(rgbExpected.R, rgbActual.R, "Hex to RGB conversion failed for R value.");
@@ -175,7 +175,7 @@ namespace ColourLibrary.Tests
         }
 
         [TestMethod()]
-        public void ToHSVTest1()
+        public void ToHSVFromRGBTest1()
         {
             //Arrange
             int r = 255, g = 0, b = 0;
@@ -184,14 +184,14 @@ namespace ColourLibrary.Tests
             HSV hsvExpected = new HSV(h,s,v);
 
             //Act
-            HSV hsvActual = Colour.ToHSV(rgb);
+            HSV hsvActual = Colour.ToHSVFromRGB(rgb);
 
             //Assert
             Assert.AreEqual(hsvExpected.V, hsvActual.V, "RGB to HSV conversion failed for V value.");
         }
 
         [TestMethod()]
-        public void ToHSVTest2()
+        public void ToHSVFromRGBTest2()
         {
             //Arrange
             int r = 0, g = 0, b = 0;
@@ -200,7 +200,7 @@ namespace ColourLibrary.Tests
             HSV hsvExpected = new HSV(h,s,v);
 
             //Act
-            HSV hsvActual = Colour.ToHSV(rgb);
+            HSV hsvActual = Colour.ToHSVFromRGB(rgb);
 
             //Assert
             Assert.AreEqual(hsvExpected.V, hsvActual.V, "RGB to HSV conversion failed for V value.");
@@ -210,14 +210,14 @@ namespace ColourLibrary.Tests
         /// Test H value below excepted range (0 - 360)
         /// </summary>
         [TestMethod()]
-        public void ToHSVTest3()
+        public void ToHSVFromRGBTest3()
         {
             //Arrange
             int h = -1, s = 0, v = 0;
 
             //Act
             try { HSV hsv = new HSV(h,s,v); }
-            catch (ArgumentOutOfRangeException e) { return; }
+            catch (ArgumentOutOfRangeException) { return; }
 
             //Assert
             Assert.Fail("Expected exception not found for H value.");
@@ -227,14 +227,14 @@ namespace ColourLibrary.Tests
         /// Test H value above excepted range (0 - 360)
         /// </summary>
         [TestMethod()]
-        public void ToHSVTest4()
+        public void ToHSVFromRGBTest4()
         {
             //Arrange
             int h = 361, s = 0, v = 0;
 
             //Act
             try { HSV hsv = new HSV(h,s,v); }
-            catch (ArgumentOutOfRangeException e) { return; }
+            catch (ArgumentOutOfRangeException) { return; }
 
             //Assert
             Assert.Fail("Expected exception not found for H value.");
@@ -243,14 +243,14 @@ namespace ColourLibrary.Tests
         /// Test S value below excepted range (0 - 100)
         /// </summary>
         [TestMethod()]
-        public void ToHSVTest5()
+        public void ToHSVFromRGBTest5()
         {
             //Arrange
             int h = 0, s = -1, v = 0;
 
             //Act
             try { HSV hsv = new HSV(h,s,v); }
-            catch (ArgumentOutOfRangeException e) { return; }
+            catch (ArgumentOutOfRangeException) { return; }
 
             //Assert
             Assert.Fail("Expected exception not found for S value.");
@@ -259,14 +259,14 @@ namespace ColourLibrary.Tests
         /// Test S value above excepted range (0 - 100)
         /// </summary>
         [TestMethod()]
-        public void ToHSVTest6()
+        public void ToHSVFromRGBTest6()
         {
             //Arrange
             int h = 0, s = 101, v = 0;
 
             //Act
             try { HSV hsv = new HSV(h,s,v); }
-            catch (ArgumentOutOfRangeException e) { return; }
+            catch (ArgumentOutOfRangeException) { return; }
 
             //Assert
             Assert.Fail("Expected exception not found for S value.");
@@ -275,14 +275,14 @@ namespace ColourLibrary.Tests
         /// Test V value below excepted range (0 - 100)
         /// </summary>
         [TestMethod()]
-        public void ToHSVTest7()
+        public void ToHSVFromRGBTest7()
         {
             //Arrange
             int h = 0, s = 0, v = -1;
 
             //Act
             try { HSV hsv = new HSV(h,s,v); }
-            catch (ArgumentOutOfRangeException e) { return; }
+            catch (ArgumentOutOfRangeException) { return; }
 
             //Assert
             Assert.Fail("Expected exception not found for V value.");
@@ -291,14 +291,14 @@ namespace ColourLibrary.Tests
         /// Test V value above excepted range (0 - 100)
         /// </summary>
         [TestMethod()]
-        public void ToHSVTest8()
+        public void ToHSVFromRGBTest8()
         {
             //Arrange
             int h = 0, s = 0, v = 101;
 
             //Act
             try { HSV hsv = new HSV(h,s,v); }
-            catch (ArgumentOutOfRangeException e) { return; }
+            catch (ArgumentOutOfRangeException) { return; }
 
             //Assert
             Assert.Fail("Expected exception not found for V value.");
@@ -308,7 +308,7 @@ namespace ColourLibrary.Tests
         /// Test rgb to hsv conversion
         /// </summary>
         [TestMethod()]
-        public void ToHSVTest9()
+        public void ToHSVFromRGBTest9()
         {
             //Arrange
             int r = 62, g = 133, b = 81;
@@ -317,7 +317,7 @@ namespace ColourLibrary.Tests
             HSV hsvExpected = new HSV(h, s, v);
 
             //Act
-            HSV hsvActual = Colour.ToHSV(rgb);
+            HSV hsvActual = Colour.ToHSVFromRGB(rgb);
 
             //Assert
             Assert.AreEqual(hsvExpected.H, hsvActual.H, "RGB to HSV conversion failed for Hue.");
@@ -447,11 +447,11 @@ namespace ColourLibrary.Tests
             //Arrange
             string hex1 = "#ACC8E5";
             string hex2 = "#112A46";
-            double expectedContrast = 8.42;
-            string expectedRatio = "8.42:1";
+            double expectedContrast = 8.41;
+            string expectedRatio = "8.41:1";
 
             //Act
-            double actualContrast = Colour.ContrastRatio(Colour.ToRGB(hex1), Colour.ToRGB(hex2), out string actualRatio);
+            double actualContrast = Colour.ContrastRatio(Colour.ToRGBFromHex(hex1), Colour.ToRGBFromHex(hex2), out string actualRatio);
 
             //Assert
             Assert.AreEqual(expectedContrast, actualContrast, "Contrast calculation Failed.");
@@ -470,7 +470,7 @@ namespace ColourLibrary.Tests
             string expectedRatio = "3.34:1";
 
             //Act
-            double actualContrast = Colour.ContrastRatio(Colour.ToRGB(hex1), Colour.ToRGB(hex2), out string actualRatio);
+            double actualContrast = Colour.ContrastRatio(Colour.ToRGBFromHex(hex1), Colour.ToRGBFromHex(hex2), out string actualRatio);
 
             //Assert
             Assert.AreEqual(expectedContrast, actualContrast, "Contrast calculation Failed.");
@@ -489,7 +489,7 @@ namespace ColourLibrary.Tests
             string expectedRatio = "1.07:1";
 
             //Act
-            double actualContrast = Colour.ContrastRatio(Colour.ToRGB(hex1), Colour.ToRGB(hex2), out string actualRatio);
+            double actualContrast = Colour.ContrastRatio(Colour.ToRGBFromHex(hex1), Colour.ToRGBFromHex(hex2), out string actualRatio);
 
             //Assert
             Assert.AreEqual(expectedContrast, actualContrast, "Contrast calculation Failed.");

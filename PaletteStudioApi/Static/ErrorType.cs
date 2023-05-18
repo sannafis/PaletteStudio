@@ -6,5 +6,6 @@
         public const string NotFound = "Not Found";
         public const string BadRequest = "Bad Request";
         public const string Unauthorized = "Unauthorized";
+        public const string Unauthenticated = "Unauthenticated";
     }
 }

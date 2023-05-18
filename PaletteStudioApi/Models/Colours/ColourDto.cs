@@ -1,7 +1,6 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using Cl = ColourLibrary;
+using ColourLibrary;
 
 namespace PaletteStudioApi.Models
 {
@@ -10,22 +9,14 @@ namespace PaletteStudioApi.Models
     {
         public string HexCode { get; set; } = string.Empty;
 
-        //public RGB RGB
-        //{
-        //    get
-        //    {
-        //        return Cl.Colour.ToRGB(this.HexCode);
-        //    }
-        //}
+        public RGB RGB
+        {
+            get { return Cl.Colour.ToRGBFromHex(this.HexCode); }
+        }
 
-        //public HSV HSV
-        //{
-        //    get
-        //    {
-        //        return Cl.Colour.ToHSV(this.RGB);
-        //    }
-        //}
-
-        //public ICollection<ColourGroup> ColourGroups = new HashSet<ColourGroup>();
+        public HSV HSV
+        {
+            get { return Cl.Colour.ToHSVFromRGB(this.RGB); }
+        }
     }
 }

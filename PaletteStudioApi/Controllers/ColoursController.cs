@@ -34,7 +34,7 @@ namespace PaletteStudioApi.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<ColourDto>>> GetColours()
         {
-            var colourDtos = await _coloursRepository.GetAllAsync<ColourDto>();
+            var colourDtos = await _coloursRepository.GetAllAsync();
             return Ok(colourDtos);
         }
 
@@ -42,7 +42,7 @@ namespace PaletteStudioApi.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedData<ColourDto>>> GetPagedColours([FromQuery] PagingParameters pagingParameters)
         {
-            var pagedColours = await _coloursRepository.GetAllPagedAsync<ColourDto>(pagingParameters);
+            var pagedColours = await _coloursRepository.GetAllPagedAsync(pagingParameters);
             return Ok(pagedColours);
         }
 

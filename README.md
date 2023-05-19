@@ -15,9 +15,9 @@
 'Palette Studio' is a project that 
 will essentially consist of three parts:
 
-1. **Colour Library** ([View in Repository](https://github.com/sannafis/ColourLibrary/tree/master/ColourLibrary "View the Colour Library source code."))
+1. **Colour Library** ([View in Repository](https://github.com/sannafis/PaletteStudio/tree/master/ColourLibrary "View the Colour Library source code."))
     - A Library that consists of methods and utilities related to colours that would be utilized throughout the project. 
-2. **Palette Studio API** ([View in Repository](https://github.com/sannafis/ColourLibrary/tree/master/ColourLibrary "View the API source code.")) ([Swagger Demo](https://palettestudioapidemo.azurewebsites.net/swagger/index.html))
+2. **Palette Studio API** ([View in Repository](https://github.com/sannafis/PaletteStudio/tree/master/PaletteStudioApi "View the API source code.")) ([Swagger Demo](https://palettestudioapidemo.azurewebsites.net/swagger/index.html))
     - Demo Login Username: ```user@palettestudio.ca```  Password: ```P@ssw0rd```
     - A REST API using ASP.NET Core 6 and Sqlite that uses JWT Authentication for users to access their palettes and related data.
 3. **Blazor Client Application (Soon)** ([More Details](#web-page-mockups))

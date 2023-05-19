@@ -8,7 +8,7 @@
   
 ### What is Palette Studio?
 
-  'Palette Studio' a project with the end goal of making an application using ASP.NET Core to help create user-friendly colour palettes.
+  'Palette Studio' is a project with the end goal of making an application using ASP.NET Core to help create user-friendly colour palettes.
   The main component being a palette editor that provides a large amount of flexibility with foreground and background colours,
    of which can be assessed and graded according to WCAG colour contrast requirements.
 

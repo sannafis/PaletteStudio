@@ -5,9 +5,9 @@
     - Demo Username: ```user@palettestudio.ca```  Password: ```P@ssw0rd```
 
 This is an API that will be used to manage user accounts and their work in Palette Studio.
-The following is a list of the basic models/schemas make up the API:
+The following is a list of the basic models/schemas that make up the API:
 
-**Schemas can be viewed in more detail in the respository and demo**
+**Schemas can be viewed in more detail in the repository and demo**
 
 <details>
  <summary>Users : Inherits from ASPNetUsers</summary>

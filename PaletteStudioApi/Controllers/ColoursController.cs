@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PaletteStudioApi.Services;
-using PaletteStudioApi.Data;
-using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models;
 using PaletteStudioApi.Models.Paging;
-using PaletteStudioApi.Repositories;
-using PaletteStudioApi.Static;
 
 namespace PaletteStudioApi.Controllers
 {

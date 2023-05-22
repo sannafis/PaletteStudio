@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace PaletteStudioApi.Models.Authentication
 {
@@ -9,8 +7,8 @@ namespace PaletteStudioApi.Models.Authentication
     {
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string? Nickname { get; set; }
+        public string? FirstName { get; set; } = string.Empty;
+        public string? LastName { get; set; } = string.Empty;
+        public string? Nickname { get; set; } = string.Empty;
     }
 }

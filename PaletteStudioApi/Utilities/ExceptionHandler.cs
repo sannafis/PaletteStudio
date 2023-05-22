@@ -1,8 +1,8 @@
-﻿using MailKit.Security;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Static;
 using System.Net;
+using System.Security.Authentication;
 
 namespace PaletteStudioApi.Utilities
 {

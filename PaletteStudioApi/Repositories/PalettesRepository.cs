@@ -8,10 +8,6 @@ using PaletteStudioApi.Exceptions;
 using PaletteStudioApi.Models;
 using PaletteStudioApi.Models.Authentication;
 using PaletteStudioApi.Models.Paging;
-using System.Security.Claims;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Components.Authorization;
 using PaletteStudioApi.Static;
 
 namespace PaletteStudioApi.Repositories

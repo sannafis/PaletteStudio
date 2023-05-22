@@ -1,28 +1,15 @@
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using Serilog;
 using PaletteStudioApi.Data;
 using Microsoft.EntityFrameworkCore;
-using JsonSubTypes;
-using PaletteStudioApi.Models;
 using PaletteStudioApi.Utilities;
 using Microsoft.AspNetCore.Identity;
 using PaletteStudioApi.Models.Authentication;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 using PaletteStudioApi.Services;
 using PaletteStudioApi.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
-using Azure.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
-using System.Security.Policy;
-using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

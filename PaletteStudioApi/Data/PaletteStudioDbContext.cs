@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaletteStudioApi.Models;
-using System.Numerics;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using PaletteStudioApi.Models.Authentication;
-using Microsoft.AspNetCore.Identity;
 using PaletteStudioApi.Data.Seeding;
 
 namespace PaletteStudioApi.Data

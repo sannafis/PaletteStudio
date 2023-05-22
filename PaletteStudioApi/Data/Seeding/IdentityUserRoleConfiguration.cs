@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PaletteStudioApi.Models.Authentication;
 
 namespace PaletteStudioApi.Data.Seeding
 {

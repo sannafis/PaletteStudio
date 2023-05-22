@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ColourLibrary;
 using Cl = ColourLibrary;
 using PaletteStudioApi.Models;
 using PaletteStudioApi.Models.Authentication;

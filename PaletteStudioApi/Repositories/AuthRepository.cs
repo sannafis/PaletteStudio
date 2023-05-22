@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using PaletteStudioApi.Services;
 using PaletteStudioApi.Models.Authentication;
@@ -151,7 +150,7 @@ namespace PaletteStudioApi.Repositories
         public async Task<string> CurrentUser()
         {
             // get current user id from token
-            var userId = _httpContext.HttpContext.User.FindFirstValue("uid");
+            var userId = _httpContext.HttpContext!.User.FindFirstValue("uid");
             var user = await _userManager.FindByIdAsync(userId);
             if(user == null)
             {

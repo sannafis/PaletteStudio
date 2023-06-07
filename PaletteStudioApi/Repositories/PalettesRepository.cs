@@ -89,6 +89,9 @@ namespace PaletteStudioApi.Repositories
 
             // get total size of data list
             var totalSize = await _context.Set<Palette>()
+                .Include(p => p.ColourGroups)
+                .ThenInclude(cg => cg.ForegroundColours)
+                .Where(p => p.UserId!.Equals(user.Id))
                 .CountAsync();
 
             // get items with paging parameters
@@ -96,7 +99,7 @@ namespace PaletteStudioApi.Repositories
                 .Include(p => p.ColourGroups)
                 .ThenInclude(cg => cg.ForegroundColours)
                 .Where(p => p.UserId!.Equals(user.Id))
-                .Skip(pagingParameters.StartIndex)
+                .Skip((pagingParameters.PageNumber-1) * pagingParameters.PageSize)
                 .Take(pagingParameters.PageSize)
                 .ProjectTo<PaletteReadOnlyDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
@@ -104,9 +107,10 @@ namespace PaletteStudioApi.Repositories
             return new PagedData<PaletteReadOnlyDto>
             {
                 Items = items,
-                PageNumber = pagingParameters.StartIndex,
-                RecordNumber = pagingParameters.PageSize,
-                TotalCount = totalSize
+                PageNumber = pagingParameters.PageNumber,
+                PageSize = pagingParameters.PageSize,
+                TotalPages = (Int32)Math.Ceiling((Decimal)totalSize / (Decimal)pagingParameters.PageSize),
+            TotalCount = totalSize
             };
         }
 
@@ -159,6 +163,7 @@ namespace PaletteStudioApi.Repositories
 
             // get total size of data list
             var totalSize = await _context.Set<Palette>()
+                .Where(p => p.Privacy.Equals(PrivacySetting.Public))
                 .CountAsync();
 
             // get items with paging parameters
@@ -166,7 +171,7 @@ namespace PaletteStudioApi.Repositories
                 .Include(p => p.ColourGroups)
                 .ThenInclude(cg => cg.ForegroundColours)
                 .Where(p => p.Privacy.Equals(PrivacySetting.Public))
-                .Skip(pagingParameters.StartIndex)
+                .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
                 .Take(pagingParameters.PageSize)
                 .ProjectTo<PaletteReadOnlyDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
@@ -174,9 +179,9 @@ namespace PaletteStudioApi.Repositories
             return new PagedData<PaletteReadOnlyDto>
             {
                 Items = items,
-                PageNumber = pagingParameters.StartIndex,
-                RecordNumber = pagingParameters.PageSize,
-                TotalCount = totalSize
+                PageNumber = pagingParameters.PageNumber,
+                PageSize = pagingParameters.PageSize,
+                TotalCount = (Int32)Math.Ceiling((Decimal)(totalSize / pagingParameters.PageSize)),
             };
         }
 

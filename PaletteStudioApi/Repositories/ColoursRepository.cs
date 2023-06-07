@@ -37,7 +37,7 @@ namespace PaletteStudioApi.Repositories
 
             // get items with paging parameters
             var colours = await _context.Set<Colour>()
-                .Skip(pagingParameters.StartIndex)
+                .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
                 .Take(pagingParameters.PageSize)
                 .ProjectTo<ColourDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
@@ -45,9 +45,9 @@ namespace PaletteStudioApi.Repositories
             return new PagedData<ColourDto>
             {
                 Items = colours,
-                PageNumber = pagingParameters.StartIndex,
-                RecordNumber = pagingParameters.PageSize,
-                TotalCount = totalSize
+                PageNumber = pagingParameters.PageNumber,
+                PageSize = pagingParameters.PageSize,
+                TotalCount = (Int32)Math.Ceiling((Decimal)(totalSize / pagingParameters.PageSize)),
             };
         }
 

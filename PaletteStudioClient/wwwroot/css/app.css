@@ -6,9 +6,6 @@ html {
     padding: 0;
     margin: 0;
     overflow-x: hidden;
-    border: 5px solid;
-    border-color: wheat;
-    background: red;
 }
 
 body {
@@ -16,7 +13,6 @@ body {
     height: 100%;
     padding: 0;
     margin: 0;
-    background-color: blueviolet;
 }
 
 #app {
@@ -30,7 +26,6 @@ main {
     padding: 0;
     margin: 0;
 }
-
 
 h1:focus {
     outline: none;
@@ -163,9 +158,4 @@ button > span {
 
 .main-cont {
     min-height: 100%;
-}
-
-.nav-item{
-    background:red;
-
 }

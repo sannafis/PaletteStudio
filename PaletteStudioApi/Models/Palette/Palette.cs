@@ -9,7 +9,7 @@ namespace PaletteStudioApi.Models
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = "Untitled";
+        public string? Name { get; set; } = "Untitled";
 
         public string Privacy { get; set; } = PrivacySetting.Private;
 

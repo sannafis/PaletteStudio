@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PaletteStudioApi.Static;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace PaletteStudioApi.Models {
-    [ModelMetadataType(typeof(PaletteMetaData))]
+namespace PaletteStudioClient.Models
+{
     public class PaletteUpdateDto : BaseDto
     {
-        public string? Name { get; set; } = "Untitled";
+        [StringLength(50, ErrorMessage = "Max character limit: 50.")]
+        public string Name { get; set; } = "Untitled";
 
         public string Privacy { get; set; } = PrivacySetting.Private;
 

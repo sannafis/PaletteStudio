@@ -1,0 +1,132 @@
+﻿@page "/palettes"
+@inject IPaletteService paletteService
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+
+<h3>Index</h3>
+
+@if (!response.Success)
+{
+    <div class="alert alert-danger">
+        <p>@response.Message</p>
+    </div>
+}
+
+
+<div class="d-flex justify-content-between">
+    <form class="w-75">
+        <div class="input-group">
+            <input type="search" name="search" class="form-control" id="search" placeholder="Search your palettes...">
+            <button class="input-group-text btn btn-primary" type="button">Search</button>
+        </div>
+    </form>
+
+    <button class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-list"></i><span>List View</span></button>
+</div>
+
+
+
+@if (Palettes == null)
+{
+    <div class="alert alert-info">
+        Loading Palettes...
+    </div>
+}
+else
+{
+
+    <div class="mt-4">
+        <Pager CurrentPage=@CurrentPage TotalPages=@TotalPages OnPageChange=@LoadPalettes />
+    </div>
+
+    <button class="btn btn-primary" @onclick=@NewPalette><span class="fa-solid fa-plus"></span>New</button>
+
+
+    <div class="container">
+        <div class="row justify-content-center">
+            @foreach (var palette in Palettes)
+            {
+                <div class=" col-lg m-0" style=" min-width:200px;max-width:250px">
+                    <div class="border-grad-grey p-1 rounded-3 m-0">
+                        <div class="card p-0 border-1 border-white rounded-3">
+                            <div class="card-img rounded-0 p-3 pb-0">
+
+                                <div class="square w-100 d-flex flex-wrap flex-column border border-1 border-transparent">
+                                    @foreach (var bg in palette.ColourGroups)
+                                    {
+                                        <div class="flex-grow-1 d-flex flex-wrap flex-column align-content-start" style="background-color:@bg.BackgroundColourHexCode; min-height:25%; min-width:25%">
+
+                                            @foreach (var fg in bg.ForegroundColours)
+                                            {
+                                                <div class="square flex-grow-0 border border-2 border-transparent" style="background-color:@fg.ColourHexCode; max-height:33px; max-width:33px;height:33%;"></div>
+                                            }
+
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="card-footer justify-content-around d-flex p-0 border-0">
+                                <button type="button" class="btn flex-sm-fill bg-white rounded-0 shadow-none text-b"><i class="icon-grey-border fa-solid fa-pen "></i></button>
+                                <button type="button" class="btn flex-sm-fill bg-white rounded-0 shadow-none"><i class="fa-solid fa-ellipsis icon-grey-border"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <Pager CurrentPage=@CurrentPage TotalPages=@TotalPages OnPageChange=@LoadPalettes />
+    </div>
+}
+
+@code {
+    private List<PaletteReadOnlyDto> Palettes;
+    private Response<PagedData<PaletteReadOnlyDto>> response = new Response<PagedData<PaletteReadOnlyDto>> { Success = true };
+    private Response<int> responseNewPalette = new Response<int> { Success = true };
+    private int TotalCount { get; set; }
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPalettes(new PagingParameters
+            {
+                PageNumber = 1,
+                PageSize = 2
+            });
+    }
+
+
+
+
+    private async Task LoadPalettes(PagingParameters pagingParams)
+    {
+
+        response = await paletteService.GetPalettes(pagingParams);
+        Palettes = response.Data.Items.ToList();
+        CurrentPage = response.Data.PageNumber;
+        TotalPages = response.Data.TotalPages;
+    }
+
+
+    private async Task NewPalette()
+    {
+        await JsRuntime.InvokeVoidAsync("alert", "asdasd");
+        responseNewPalette = await paletteService.CreatePalette(new PaletteCreateDto());
+        if (responseNewPalette.Success && responseNewPalette.Data != 0)
+        {
+            int newPaletteId = responseNewPalette.Data;
+            navManager.NavigateTo($"/studio/{newPaletteId}");
+        }else{
+            await JsRuntime.InvokeVoidAsync("alert", $"{responseNewPalette.Data} - {responseNewPalette.Success}");
+        }
+
+    }
+}

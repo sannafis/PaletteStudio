@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PaletteStudioApi.Static;
+using System.Collections.Generic;
 
-namespace PaletteStudioApi.Models {
-    [ModelMetadataType(typeof(PaletteMetaData))]
+namespace PaletteStudioClient.Models
+{
     public class PaletteReadOnlyDto : BaseDto
     {
-        public string? Name { get; set; } = "Untitled";
+        public string Name { get; set; } = "Untitled";
 
         public string Privacy { get; set; } = PrivacySetting.Private;
 

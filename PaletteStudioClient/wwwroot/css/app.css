@@ -2,32 +2,30 @@
 
 html {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    border: 1px solid red;
     height: 100%;
     padding: 0;
     margin: 0;
     overflow-x: hidden;
+    border: 5px solid;
+    border-color: wheat;
+    background: red;
 }
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    border: 1px solid blue;
     height: 100%;
     padding: 0;
     margin: 0;
-    
+    background-color: blueviolet;
 }
 
 #app {
-
     height: 99%;
     padding: 0;
     margin: 0;
-    
 }
 
 main {
-
     height: 99%;
     padding: 0;
     margin: 0;
@@ -98,6 +96,7 @@ a, .btn-link {
 button:hover > i {
     animation: fa-beat 2s infinite
 }
+
     button:hover > i.icon-grey-border.fa-heart {
         color: darkred !important;
         -webkit-text-stroke-color: darkred !important;
@@ -106,22 +105,23 @@ button:hover > i {
 button i {
     transition: transform 0.2s ease 0s;
 }
+
 button > span {
     transition: transform 0.5s ease 0s;
-    padding-left:8px;
+    padding-left: 8px;
 }
 
-.row > div{
-    max-width:100px;
+.row > div {
+    max-width: 100px;
 }
 
-.square{
-    aspect-ratio:1/1;
+.square {
+    aspect-ratio: 1/1;
 }
 
 .circle {
     aspect-ratio: 1/1;
-    border-radius:50%;
+    border-radius: 50%;
 }
 
 .help-btn {
@@ -134,11 +134,13 @@ button > span {
     margin-right: 5px;
     border-color: darkgrey !important;
 }
+
     .help-btn > i {
         color: darkgrey;
     }
+
     .help-btn:hover > i {
-        animation:none;
+        animation: none;
     }
 
 .border-grad-grey {
@@ -158,6 +160,12 @@ button > span {
     background-clip: padding-box !important;
     -webkit-background-clip: padding-box !important;
 }
+
 .main-cont {
-    min-height : 100%;
+    min-height: 100%;
+}
+
+.nav-item{
+    background:red;
+
 }

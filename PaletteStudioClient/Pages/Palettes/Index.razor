@@ -22,6 +22,8 @@
     </form>
 
     <button class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-list"></i><span>List View</span></button>
+    <button class="input-group-text btn btn-primary" @onclick=@NewPalette type="button"><i class="fa-solid fa-plus"></i><span>New</span></button>
+
 </div>
 
 
@@ -39,7 +41,6 @@ else
         <Pager CurrentPage=@CurrentPage TotalPages=@TotalPages OnPageChange=@LoadPalettes />
     </div>
 
-    <button class="btn btn-primary" @onclick=@NewPalette><span class="fa-solid fa-plus"></span>New</button>
 
 
     <div class="container">
@@ -71,8 +72,8 @@ else
 
 
                             <div class="card-footer justify-content-around d-flex p-0 border-0">
-                                <button type="button" class="btn flex-sm-fill bg-white rounded-0 shadow-none text-b"><i class="icon-grey-border fa-solid fa-pen "></i></button>
-                                <button type="button" class="btn flex-sm-fill bg-white rounded-0 shadow-none"><i class="fa-solid fa-ellipsis icon-grey-border"></i></button>
+                                <a href="/studio/@palette.Id" class="btn flex-sm-fill bg-white rounded-0 shadow-none text-b"><i class="icon-grey-border fa-solid fa-pen "></i></a>
+                                <a class="btn flex-sm-fill bg-white rounded-0 shadow-none"><i class="fa-solid fa-ellipsis icon-grey-border"></i></a>
                             </div>
                         </div>
                     </div>

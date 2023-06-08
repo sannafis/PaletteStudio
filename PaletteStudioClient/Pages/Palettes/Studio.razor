@@ -2,9 +2,6 @@
 @inject IPaletteService paletteService
 @inject NavigationManager navManager
 
-<h3>studio</h3>
-
-
 @if (Palette == null)
 {
     <div class="alert alert-info">
@@ -13,21 +10,9 @@
 }
 else
 {
-<EditForm Model=@Palette OnValidSubmit=@Submit>
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="name">Name</label>
-        <InputText id="name" class="form-control" @bind-Value="Palette!.Name" />
-        <ValidationMessage For=@(() => Palette.Name) />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-    <button type="button" @onclick=Back class="btn btn-outline-secondary">Cancel</button>
-
-
-
+    <EditForm Model=@Palette OnValidSubmit=@Submit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
         <div class="d-flex justify-content-between m-3">
 
@@ -44,40 +29,40 @@ else
 
         </div>
 
-            <div class="border border-1 border-danger p-0 m-0 w-100" style="left:0;margin-bottom:5px;height:calc(100% - 120px);bottom:0 ;position:absolute">
+        <div class="p-0 m-0 w-100" style="left:0;margin-bottom:5px;height:calc(100% - 120px);bottom:0 ;position:absolute">
 
-                <div class="palette-view border border-1 border-info  " style=" margin-bottom:5px; height:99%">
+            <div class="palette-view shadow-lg  " style=" margin-bottom:5px; height:99%">
 
 
 
-                    <div class=" d-flex flex-nowrap flex-row border border-1 border-info p-0 h-100">
-                        @for (int y = 1; y <= 5; y++)
-                        {
-                            <div class="flex-grow-1 d-flex flex-wrap flex-grow-1 flex-column h-100" style=" border:1px solid red;">
+                <div class=" d-flex flex-nowrap flex-row p-0 h-100">
+                    @foreach (var bg in Palette.ColourGroups)
+                    {
+                        <div class="flex-grow-1 d-flex flex-wrap flex-grow-1 flex-column h-100">
 
-                                <div class="flex-grow-1 d-flex flex-wrap  flex-column-reverse" style="background-color:black; border:1px solid white; ">
-                                </div>
-                                <div class="flex-grow-1 d-flex   flex-column-reverse">
-
-                                    @for (int x = 1; x <= 5; x++)
-                                    {
-                                        <div class="square flex-grow-1 border border-1 border-white" style="background-color:red;"></div>
-                                    }
-
-                                </div>
+                            <div class="flex-grow-1 d-flex flex-wrap  flex-column-reverse" style="background-color:@bg.BackgroundColourHexCode;">
                             </div>
-                        }
-                    </div>
+                            <div class="flex-grow-1 d-flex   flex-column-reverse">
 
+                                @foreach (var fg in bg.ForegroundColours)
+                                {
+                                    <div class="square flex-grow-1" style="background-color:@fg.ColourHexCode;"></div>
+                                }
 
-
-
+                            </div>
+                        </div>
+                    }
                 </div>
+
+
+
+
             </div>
+        </div>
 
-        
 
-</EditForm>
+
+    </EditForm>
 }
 
 @code {
@@ -88,7 +73,7 @@ else
     private PaletteReadOnlyDto? Palette { get; set; }
 
     Response<PaletteReadOnlyDto> response = new Response<PaletteReadOnlyDto>();
-    Response<bool> responseSubmit = new Response<bool>{Success = false};
+    Response<bool> responseSubmit = new Response<bool> { Success = false };
 
     protected override async Task OnInitializedAsync()
     {

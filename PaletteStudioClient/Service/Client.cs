@@ -78,7 +78,7 @@ namespace PaletteStudioClient.Service
                         }
 
                         var status = (int)response.StatusCode;
-                        if (status == 200)
+                        if (CheckStatusSuccess(status))
                         {
                             return;
                         }
@@ -139,7 +139,7 @@ namespace PaletteStudioClient.Service
                         }
 
                         var status = (int)response.StatusCode;
-                        if (status == 200)
+                        if (CheckStatusSuccess(status))
                         {
                             var objectresponse = await ReadObjectResponseAsync<AuthResponse>(response, headers, cancellationToken).ConfigureAwait(false);
                             if (objectresponse.Object == null)
@@ -211,7 +211,7 @@ namespace PaletteStudioClient.Service
                         }
 
                         var status = (int)response.StatusCode;
-                        if (status == 200)
+                        if (CheckStatusSuccess(status))
                         {
                             var objectResponse = await ReadObjectResponseAsync<PagedData<PaletteReadOnlyDto>>(response, headers, cancellationToken).ConfigureAwait(false);
                             if (objectResponse.Object == null)
@@ -283,7 +283,7 @@ namespace PaletteStudioClient.Service
                         }
 
                         var status = (int)response.StatusCode;
-                        if (status == 200)
+                        if (CheckStatusSuccess(status))
                         {
                             var objectResponse = await ReadObjectResponseAsync<PagedData<PaletteReadOnlyDto>>(response, headers, cancellationToken).ConfigureAwait(false);
                             if (objectResponse.Object == null)
@@ -349,7 +349,7 @@ namespace PaletteStudioClient.Service
                         }
 
                         var status = (int)response.StatusCode;
-                        if (status == 200)
+                        if (CheckStatusSuccess(status))
                         {
                             var objectresponse = await ReadObjectResponseAsync<PaletteReadOnlyDto>(response, headers, cancellationToken).ConfigureAwait(false);
                             if (objectresponse.Object == null)
@@ -415,7 +415,7 @@ namespace PaletteStudioClient.Service
                         }
 
                         var status = (int)response.StatusCode;
-                        if (status == 200)
+                        if (CheckStatusSuccess(status))
                         {
                             return;
                         }
@@ -472,7 +472,7 @@ namespace PaletteStudioClient.Service
                         }
 
                         var status = (int)response.StatusCode;
-                        if (status == 200)
+                        if (CheckStatusSuccess(status))
                         {
                             return;
                         }
@@ -536,7 +536,7 @@ namespace PaletteStudioClient.Service
                         }
 
                         var status = (int)response.StatusCode;
-                        if (status == 200)
+                        if (CheckStatusSuccess(status))
                         {
                             var objectResponse = await ReadObjectResponseAsync<PaletteReadOnlyDto>(response, headers, cancellationToken).ConfigureAwait(false);
                             if (objectResponse.Object == null)
@@ -650,6 +650,15 @@ namespace PaletteStudioClient.Service
 
             var result = Convert.ToString(value, cultureInfo);
             return result == null ? "" : result;
+        }
+
+        private bool CheckStatusSuccess(int status)
+        {
+            if (200 <= status || status <= 299)
+            {
+                return true;
+            }
+            return false;
         }
 
     }

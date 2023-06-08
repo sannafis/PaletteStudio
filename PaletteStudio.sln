@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColourLibraryTests", "Colou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaletteStudioApi", "PaletteStudioApi\PaletteStudioApi.csproj", "{0519FF70-F2E2-4ADC-ADDD-8E16D3F9B0ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaletteStudioClient", "..\PaletteStudioClient_Solution\PaletteStudioClient\PaletteStudioClient.csproj", "{96A3214C-374F-4501-8D64-89D72EA2B41F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaletteStudioClient", "PaletteStudioClient\PaletteStudioClient.csproj", "{1A457E8E-C342-474A-8780-5FBE398DFB90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{0519FF70-F2E2-4ADC-ADDD-8E16D3F9B0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0519FF70-F2E2-4ADC-ADDD-8E16D3F9B0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0519FF70-F2E2-4ADC-ADDD-8E16D3F9B0ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96A3214C-374F-4501-8D64-89D72EA2B41F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96A3214C-374F-4501-8D64-89D72EA2B41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96A3214C-374F-4501-8D64-89D72EA2B41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96A3214C-374F-4501-8D64-89D72EA2B41F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A457E8E-C342-474A-8780-5FBE398DFB90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A457E8E-C342-474A-8780-5FBE398DFB90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A457E8E-C342-474A-8780-5FBE398DFB90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A457E8E-C342-474A-8780-5FBE398DFB90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

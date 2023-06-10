@@ -1,6 +1,7 @@
 ﻿@page "/studio/{Id:int}"
 @inject IPaletteService paletteService
 @inject NavigationManager navManager
+@inject IJSRuntime JsRuntime
 
 @if (Palette == null)
 {
@@ -14,39 +15,47 @@ else
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <div class="d-flex justify-content-between m-3">
+        <div class="d-flex justify-content-between">
 
-            <button class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-chevron-left"></i><span>Back</span></button>
+            <button @onclick=@Back class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-chevron-left"></i><span>Back</span></button>
             <div class="d-flex justify-content-between">
                 <button data-toggle="tooltip" data-placement="top" title="The name of your palette is only visible to you and will NOT be shown to others if it is public." class="help-btn circle input-group-text btn btn-primary btn-close-white border border-2" type="button"><i class="fa-solid fa-question"></i></button>
 
                 <label class="col-sm-2 col-form-label" for="name">Name:</label>
                 <input type="text" name="name" class="form-control" id="name" @bind-value="Palette.Name" placeholder="Ex: Cool Palette">
 
-                <button class="input-group-text btn btn-primary " type="button"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
-
+                <button @onclick=@Submit class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
             </div>
 
         </div>
 
-        <div class="p-0 m-0 w-100" style="left:0;margin-bottom:5px;height:calc(100% - 120px);bottom:0 ;position:absolute">
-
-            <div class="palette-view shadow-lg  " style=" margin-bottom:5px; height:99%">
+        <div class="p-0 m-0 w-100 shadow-lg" style="left:0;height:calc(100% - 120px);bottom:0 ;position:absolute">
 
 
 
-                <div class=" d-flex flex-nowrap flex-row p-0 h-100">
+            <div class="palette-view" style="height:99%">
+
+                <div class="rating">
+                    <button>Rating</button>
+                    <button>Rating</button>
+                    <button>Rating</button>
+                    <button>Rating</button>
+                </div>
+
+                <div class=" d-flex flex-nowrap flex-column flex-lg-row p-0 h-100">
+
+
                     @foreach (var bg in Palette.ColourGroups)
                     {
-                        <div class="flex-grow-1 d-flex flex-wrap flex-grow-1 flex-column h-100">
+                        <div class="flex-grow-1 d-flex flex-wrap flex-row flex-lg-column h-100 ">
 
-                            <div class="flex-grow-1 d-flex flex-wrap  flex-column-reverse" style="background-color:@bg.BackgroundColourHexCode;">
+                            <div class="flex-grow-1 d-flex flex-wrap flex-column-reverse" style="background-color:@bg.BackgroundColourHexCode;">
                             </div>
-                            <div class="flex-grow-1 d-flex   flex-column-reverse">
+                            <div class="flex-grow-1 d-flex flex-lg-row flex-column-reverse" style="max-height:100%">
 
                                 @foreach (var fg in bg.ForegroundColours)
                                 {
-                                    <div class="square flex-grow-1" style="background-color:@fg.ColourHexCode;"></div>
+                                    <div class="flex-grow-1 " style="background-color:@fg.ColourHexCode;"></div>
                                 }
 
                             </div>
@@ -58,6 +67,10 @@ else
 
 
             </div>
+
+
+
+
         </div>
 
 
@@ -88,7 +101,16 @@ else
 
     private async Task Submit()
     {
+        await JsRuntime.InvokeVoidAsync("alert", "CLICKED");
         responseSubmit = await paletteService.UpdatePalette(Palette!.Id, Palette);
+        if (responseSubmit.Success)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", $"{responseSubmit.Data}YES");
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "NO");
+        }
     }
     private void Back()
     {

@@ -83,7 +83,7 @@ namespace PaletteStudioClient.Service.Palette
 
         public async Task<Response<bool>> UpdatePalette(int id, PaletteReadOnlyDto palette)
         {
-            Response<bool> response;
+            Response<bool> response = new Response<bool> { Success = true };
             try
             {
                 await GetToken();

@@ -57,6 +57,7 @@ namespace PaletteStudioApi.Repositories
                 .Include(p => p.ColourGroups)
                 .ThenInclude(cg => cg.ForegroundColours)
                 .Where(p => p.UserId!.Equals(user.Id))
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (palette == null)
@@ -126,7 +127,9 @@ namespace PaletteStudioApi.Repositories
             // map source dto object to the original entity type
             _mapper.Map(paletteUpdateDto, paletteEntity);
             _context.Update(paletteEntity);
+            
             await _context.SaveChangesAsync();
+            _context.Entry(paletteEntity).State = EntityState.Detached;
         }
 
         public async Task<PaletteReadOnlyDto> CreateAsync(PaletteCreateDto paletteDto)

@@ -1,6 +1,5 @@
 ﻿@page "/studiomockup"
 
-<div class="main-cont">
     @if (!response.Success)
     {
         <div class="alert alert-danger">
@@ -9,50 +8,51 @@
     }
 
 
-    <div class="d-flex justify-content-between m-3">
-
-        <button class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-chevron-left"></i><span>Back</span></button>
-        <div class="d-flex justify-content-between">
-            <button data-toggle="tooltip" data-placement="top" title="The name of your palette is only visible to you and will NOT be shown to others if it is public." class="help-btn circle input-group-text btn btn-primary btn-close-white border border-2" type="button"><i class="fa-solid fa-question"></i></button>
-
-            <label class="col-sm-2 col-form-label" for="name">Name:</label>
-            <input type="search" name="search" class="form-control" id="search" placeholder="Ex: ">
-
-            <button class="input-group-text btn btn-primary " type="button"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
-
-        </div>
-
+@if (response == null)
+{
+    <div class="alert alert-info">
+        Loading Palette Studio...
     </div>
+}
+else
+{
 
 
+        <div class="d-flex justify-content-between">
 
-    @if (response == null)
-    {
-        <div class="alert alert-info">
-            Loading Studio...
+            <button class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-chevron-left"></i><span>Back</span></button>
+            <div class="d-flex justify-content-between">
+                <button data-toggle="tooltip" data-placement="top" title="The name of your palette is only visible to you and will NOT be shown to others if it is public." class="help-btn circle input-group-text btn btn-primary btn-close-white border border-2" type="button"><i class="fa-solid fa-question"></i></button>
+
+                <label class="col-sm-2 col-form-label" for="name">Name:</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Ex: Cool Palette">
+
+                <button class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
+            </div>
+
         </div>
-    }
-    else
-    {
 
-        <div class="border border-1 border-danger p-0 m-0 w-100" style="left:0;margin-bottom:5px;height:calc(100% - 120px);bottom:0 ;position:absolute">
-
-            <div class="palette-view border border-1 border-info  " style=" margin-bottom:5px; height:99%">
+        <div class="p-0 m-0 w-100 shadow-lg" style="left:0;height:calc(100% - 120px);bottom:0 ;position:absolute">
 
 
 
-                <div class=" d-flex flex-nowrap flex-row border border-1 border-info p-0 h-100">
-                    @for (int y = 1; y <= 5; y++)
+            <div class="palette-view" style="height:99%">
+
+
+                <div class=" d-flex flex-nowrap flex-column flex-lg-row p-0 h-100">
+
+
+                    @for (int i=1;i<=6;i++)
                     {
-                        <div class="flex-grow-1 d-flex flex-wrap flex-grow-1 flex-column h-100" style=" border:1px solid red;">
+                        <div class="flex-grow-1 d-flex flex-wrap flex-row flex-lg-column h-100 ">
 
-                            <div class="flex-grow-1 d-flex flex-wrap  flex-column-reverse" style="background-color:black; border:1px solid white; ">
+                            <div class="flex-grow-1 d-flex flex-wrap flex-column-reverse border border-1 border-white" style="background-color:black;">
                             </div>
-                            <div class="flex-grow-1 d-flex   flex-column-reverse">
+                            <div class="flex-grow-1 d-flex flex-lg-row flex-column-reverse" style="max-height:100%">
 
-                                @for (int x = 1; x <= 5; x++)
+                                @for (int x=1;x<=4;x++)
                                 {
-                                    <div class="square flex-grow-1 border border-1 border-white" style="background-color:red;"></div>
+                                    <div class="flex-grow-1 border border-1 border-white" style="background-color:red;"></div>
                                 }
 
                             </div>
@@ -64,10 +64,14 @@
 
 
             </div>
+
+
+
+
         </div>
 
-    }
-</div>
+
+}
 
 @code {
     private Response<PaletteReadOnlyDto> response = new Response<PaletteReadOnlyDto> { Success = true };

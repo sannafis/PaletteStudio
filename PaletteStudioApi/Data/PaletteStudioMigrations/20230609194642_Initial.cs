@@ -194,8 +194,8 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BackgroundColourHexCode = table.Column<string>(type: "TEXT", nullable: false),
-                    PaletteId = table.Column<int>(type: "INTEGER", nullable: false)
+                    BackgroundColourHexCode = table.Column<string>(type: "TEXT", nullable: true),
+                    PaletteId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -204,14 +204,12 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         name: "FK_ColourGroups_Colours_BackgroundColourHexCode",
                         column: x => x.BackgroundColourHexCode,
                         principalTable: "Colours",
-                        principalColumn: "HexCode",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "HexCode");
                     table.ForeignKey(
                         name: "FK_ColourGroups_Palettes_PaletteId",
                         column: x => x.PaletteId,
                         principalTable: "Palettes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -220,8 +218,8 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ColourGroupId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ColourHexCode = table.Column<string>(type: "TEXT", nullable: false)
+                    ColourGroupId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ColourHexCode = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,35 +228,33 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         name: "FK_ForegroundColours_ColourGroups_ColourGroupId",
                         column: x => x.ColourGroupId,
                         principalTable: "ColourGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ForegroundColours_Colours_ColourHexCode",
                         column: x => x.ColourHexCode,
                         principalTable: "Colours",
-                        principalColumn: "HexCode",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "HexCode");
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0e97e6f5-e05f-43fd-b33f-bdb6ff465658", "9faab77f-5aa8-4d18-9691-266c3aec6ad3", "Administrator", "ADMINISTRATOR" });
+                values: new object[] { "0e97e6f5-e05f-43fd-b33f-bdb6ff465658", "53e5000e-46ad-4611-8e84-a9a761eb8951", "Administrator", "ADMINISTRATOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "608616ab-2cb2-4823-9021-b11452f80986", "6e22e3f8-bb05-462e-acf1-4522eb226e53", "User", "USER" });
+                values: new object[] { "608616ab-2cb2-4823-9021-b11452f80986", "217d5e55-8523-45af-a6c9-acd4b3610a01", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "Nickname", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "354492fe-30eb-4261-b5b1-4a291cb4001d", 0, "a8c91896-886f-4d0c-a4eb-51de83fcfd90", "user@palettestudio.ca", true, "Palette Studio", "User", false, null, "Test User", "USER@PALETTESTUDIO.CA", "USER@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEApvd943UGqbyvc3JgFd+uKNO7c8uMlgrV/9RLgg90OWx7hBPq2xuXWGb7ugapd8HA==", null, false, "07ea4d9b-7fd5-4fbb-b38e-fcd5133b494b", false, "user@palettestudio.ca" });
+                values: new object[] { "354492fe-30eb-4261-b5b1-4a291cb4001d", 0, "532199d4-7eb6-499f-bf6c-4c8c39d142dd", "user@palettestudio.ca", true, "Palette Studio", "User", false, null, "Test User", "USER@PALETTESTUDIO.CA", "USER@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEOr31kbBVdX6+SkueWWTi7xxhpmb7P22s6E597OXe3hEKyTgkAH5kcUxSnGTPLgL2Q==", null, false, "1d193676-5548-47fd-99d2-6a5921538d0b", false, "user@palettestudio.ca" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "Nickname", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dc3fbe21-8f2a-4ac3-9516-91957919b028", 0, "e4eb65f5-21f0-435e-baee-c335a1f9e3a7", "admin@palettestudio.ca", true, "Palette Studio", "Admin", false, null, "Admin", "ADMIN@PALETTESTUDIO.CA", "ADMIN@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEPOguBI1oNotTAorFqt+LUoM40pieunhExEnCGIbVLLoGvGQjKctckM7V6vxY4gdZA==", null, false, "ce111549-771f-4a90-9647-bf43c73e222b", false, "admin@palettestudio.ca" });
+                values: new object[] { "dc3fbe21-8f2a-4ac3-9516-91957919b028", 0, "b8c2e016-9c08-4c6f-b358-03e10447c170", "admin@palettestudio.ca", true, "Palette Studio", "Admin", false, null, "Admin", "ADMIN@PALETTESTUDIO.CA", "ADMIN@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEOx3yYtnYGGcCmF2vYLiAjQRr2wO1NsZFM6bMaEI+GknQkr1sRnjqCTpDbaYShYpEA==", null, false, "b1bd3ca1-4fb2-42d4-ab87-be77a04832b2", false, "admin@palettestudio.ca" });
 
             migrationBuilder.InsertData(
                 table: "Colours",

@@ -3,28 +3,28 @@
 html {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     height: 100%;
-    padding: 0;
     margin: 0;
     overflow-x: hidden;
+    padding: 0;
 }
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     height: 100%;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 #app {
     height: 99%;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 main {
     height: 99%;
+    margin: 20px !important;
     padding: 0;
-    margin: 25px;
 }
 
 h1:focus {
@@ -78,15 +78,15 @@ a, .btn-link {
 
 .blazor-error-boundary {
     background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
-    padding: 1rem 1rem 1rem 3.7rem;
     color: white;
+    padding: 1rem 1rem 1rem 3.7rem;
 }
 
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
 
-/*** My Customs ***/
+                                        /*** My Customs ***/
 
 button:hover > i {
     animation: fa-beat 2s infinite
@@ -102,8 +102,8 @@ button i {
 }
 
 button > span {
-    transition: transform 0.5s ease 0s;
     padding-left: 8px;
+    transition: transform 0.5s ease 0s;
 }
 
 .row > div {
@@ -120,14 +120,13 @@ button > span {
 }
 
 .help-btn {
-    border-color: darkgrey;
+    border-color: darkgrey !important;
     color: darkgrey;
     height: 25px;
-    width: 25px;
+    margin-right: 5px;
     margin-top: 7px;
     padding: 0;
-    margin-right: 5px;
-    border-color: darkgrey !important;
+    width: 25px;
 }
 
     .help-btn > i {
@@ -143,19 +142,84 @@ button > span {
 }
 
 .icon-grey-border {
-    font-size: 25px !important;
     color: transparent !important;
+    font-size: 25px !important;
+    paint-order: stroke fill !important;
     -webkit-text-stroke-width: 3px !important;
     -webkit-text-stroke-color: darkgray !important;
-    paint-order: stroke fill !important;
 }
 
 .border-transparent {
-    border-color: rgba(0,0,0,0) !important;
     background-clip: padding-box !important;
+    border-color: rgba(0,0,0,0) !important;
     -webkit-background-clip: padding-box !important;
 }
 
 .main-cont {
     min-height: 100%;
 }
+
+.border-dotted {
+    border-style: dotted;
+}
+
+.cursor-pointer{
+    cursor:pointer;
+}
+
+.bottom-55{
+    bottom:55%
+}
+
+                                    /*********** Colour Picker ***********/
+
+svg {
+    z-index: 5;
+}
+
+.bg-none {
+    background: none;
+}
+
+#colourCanvas {
+    aspect-ratio: 1/1;
+    width: 100%;
+    z-index: 2;
+}
+
+circle {
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));
+    stroke: white;
+    stroke-width: 1%;
+}
+
+#colourPreview {
+    max-height: 100px;
+    min-height: 25px;
+}
+
+
+#saturationSlider {
+    appearance: none !important;
+    height: 10px !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+}
+
+    #saturationSlider::-webkit-slider-thumb, #saturationSlider::-moz-range-thumb {
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        aspect-ratio: 1/1 !important;
+        background: none !important;
+        border-color: white !important;
+        border-style: solid !important;
+        border-radius: 50% !important;
+        border-width: 3p !importantx;
+        box-shadow: 1px 1px 1px rgba(0,0,0,0.5) !important;
+        cursor: pointer !important;
+        height: 80% !important;
+        max-width: 8px !important;
+        min-width: 1px !important;
+    }
+
+                                        /* Colour Picker - End*/

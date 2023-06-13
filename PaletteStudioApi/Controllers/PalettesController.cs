@@ -34,7 +34,7 @@ namespace PaletteStudioApi.Controllers
             return Ok(paletteDtos);
         }
 
-        // GET: api/Palettes/?StartIndex=0&pageSize=15&PageNumber=1
+        // GET: api/Palettes/GetAllPublicPaged/?StartIndex=0&pageSize=15&PageNumber=1
         [HttpGet("GetAllPublicPaged")]
         public async Task<ActionResult<PagedData<PaletteReadOnlyDto>>> GetPublicPagedPalettes([FromQuery] PagingParameters pagingParameters)
         {
@@ -52,7 +52,7 @@ namespace PaletteStudioApi.Controllers
             return Ok(paletteDtos);
         }
 
-        // GET: api/Palettes/?StartIndex=0&pageSize=15&PageNumber=1
+        // GET: api/Palettes/GetAllPaged/?StartIndex=0&pageSize=15&PageNumber=1
         [HttpGet("GetAllPaged")]
         public async Task<ActionResult<PagedData<PaletteReadOnlyDto>>> GetPagedPalettes([FromQuery] PagingParameters pagingParameters)
         {
@@ -124,6 +124,12 @@ namespace PaletteStudioApi.Controllers
                     .Select(f => f.ColourHexCode)
                     .Prepend(p.BackgroundColourHexCode))
                 .ToList();
+            _logger.LogInformation($"Colours:");
+            foreach (var colour in paletteColours)
+            {
+                _logger.LogInformation($"{colour}");
+            }
+            
 
             foreach (string colour in paletteColours)
             {
@@ -146,9 +152,15 @@ namespace PaletteStudioApi.Controllers
 
         private async Task NewColour(ColourDto colour)
         {
-            if (!await _coloursRepository.Exists(colour.HexCode)) // create new colour record if it does not exist
+            _logger.LogInformation($"Creating New Colour: {colour.HexCode.ToUpper()}");
+            if (await _coloursRepository.Exists(colour.HexCode.ToUpper()) == false) // create new colour record if it does not exist
             {
                 await _coloursRepository.CreateNormalizedAsync(colour);
+                _logger.LogInformation($"Succesfully Created New Colour: {colour.HexCode.ToUpper()}");
+            }
+            else
+            {
+                _logger.LogInformation($"Colour Already Exists: {colour.HexCode.ToUpper()}");
             }
         }
     }

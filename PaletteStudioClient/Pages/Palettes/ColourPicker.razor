@@ -1,0 +1,88 @@
+﻿@page "/colourpicker"
+@inject IJSRuntime JS
+@using ColourLibrary
+
+<div class="d-flex flex-column" style="width:@(WidthPx != null? WidthPx+"px" : "100px")">
+    <div id="colourPreview" class="w-100 mb-1" style="background-color:@CurrentColour.HexCode"></div>
+    <div class="d-flex position-relative">
+        <svg class="bg-none flex-shrink-1 w-100 h-100 position-absolute pe-none">
+            <circle id="selector" class="selector" cx="50%" cy="50%" r="3%" style="fill: rgba(@(CurrentColour.RGB.R),@(CurrentColour.RGB.G),@(CurrentColour.RGB.B),1);" />
+        </svg>
+        <canvas id="colourCanvas" @onmousedown="MouseDown" @onmousemove="MouseMoved" @onmouseup="MouseUp" @onmouseout="MouseOut">
+        </canvas>
+    </div>
+    <input type="range" min="0" max="100" value="50" class="w-100 rounded-pill mt-1" id="saturationSlider" @oninput="SaturationChanged" style="background: linear-gradient(90deg, hsl(@(CurrentColour.HSV.H), 100%, 50%, 1) 0%, rgb(128, 128, 128, 1) 100%);">
+</div>
+
+@code {
+    [Parameter]
+    public ColourDto? colourToEdit { get; set; }
+
+    [Parameter]
+    public string WidthPx { get; set; } = "100";
+
+    [Parameter]
+    public EventCallback<ColourDto> OnClickCallback { get; set; }
+
+    private ColourDto CurrentColour = new ColourDto { HexCode = "#ffffff" };
+
+    private bool mouseMoved = false;
+    private bool mouseDown = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        int[] newColour = await JS.InvokeAsync<int[]>("initColourPicker");
+        await ChangeColour(Colour.ToHexFromRGB(new RGB(newColour[0], newColour[1], newColour[2])));
+
+    }
+
+    public async Task MouseMoved(MouseEventArgs e)
+    {
+        if (mouseDown)
+        {
+            int[] newColour = await JS.InvokeAsync<int[]>("moveSelector", e);
+            await ChangeColour(Colour.ToHexFromRGB(new RGB(newColour[0], newColour[1], newColour[2])));
+        }
+    }
+
+    private async Task MouseUp(MouseEventArgs e)
+    {
+        mouseDown = false;
+        int[] newColour = await JS.InvokeAsync<int[]>("moveSelector", e);
+        await ChangeColour(Colour.ToHexFromRGB(new RGB(newColour[0], newColour[1], newColour[2])));
+
+    }
+
+    private async Task MouseOut(MouseEventArgs e)
+    {
+        mouseDown = false;
+    }
+
+    private async Task MouseDown(MouseEventArgs e)
+    {
+        mouseDown = true;
+    }
+
+    private async Task SaturationChanged()
+    {
+        int[] newColour = await JS.InvokeAsync<int[]>("initColourPicker");
+        await ChangeColour(Colour.ToHexFromRGB(new RGB(newColour[0], newColour[1], newColour[2])));
+
+    }
+
+    private async void ColourChanged()
+    {
+        await JS.InvokeVoidAsync("Log");
+    }
+
+    private async Task ChangeColour(string newColour)
+    {
+        CurrentColour.HexCode = newColour;
+        if (colourToEdit != null)
+        {
+            colourToEdit!.HexCode = colourToEdit == null ? newColour : string.Empty;
+            await OnClickCallback!.InvokeAsync(CurrentColour);
+        }
+        Console.WriteLine(newColour);
+    }
+}

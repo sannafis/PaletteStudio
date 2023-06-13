@@ -239,22 +239,22 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0e97e6f5-e05f-43fd-b33f-bdb6ff465658", "53e5000e-46ad-4611-8e84-a9a761eb8951", "Administrator", "ADMINISTRATOR" });
+                values: new object[] { "0e97e6f5-e05f-43fd-b33f-bdb6ff465658", "654c20c1-0498-4c1c-a732-3aabe39282fd", "Administrator", "ADMINISTRATOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "608616ab-2cb2-4823-9021-b11452f80986", "217d5e55-8523-45af-a6c9-acd4b3610a01", "User", "USER" });
+                values: new object[] { "608616ab-2cb2-4823-9021-b11452f80986", "f94676a2-d93f-4ea4-bee0-283d3dd9194f", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "Nickname", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "354492fe-30eb-4261-b5b1-4a291cb4001d", 0, "532199d4-7eb6-499f-bf6c-4c8c39d142dd", "user@palettestudio.ca", true, "Palette Studio", "User", false, null, "Test User", "USER@PALETTESTUDIO.CA", "USER@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEOr31kbBVdX6+SkueWWTi7xxhpmb7P22s6E597OXe3hEKyTgkAH5kcUxSnGTPLgL2Q==", null, false, "1d193676-5548-47fd-99d2-6a5921538d0b", false, "user@palettestudio.ca" });
+                values: new object[] { "354492fe-30eb-4261-b5b1-4a291cb4001d", 0, "0fc256d8-a3a7-4546-8ecc-9331d5176b02", "user@palettestudio.ca", true, "Palette Studio", "User", false, null, "Test User", "USER@PALETTESTUDIO.CA", "USER@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAELEVER90UBKtwQHt+CsjFwPfs6TgyR+MIt+SEND5hvU54U+a4YtXW9wvqTElx7t4xw==", null, false, "468e9f0c-ef45-4b4c-bc6b-50171af2c14e", false, "user@palettestudio.ca" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "Nickname", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dc3fbe21-8f2a-4ac3-9516-91957919b028", 0, "b8c2e016-9c08-4c6f-b358-03e10447c170", "admin@palettestudio.ca", true, "Palette Studio", "Admin", false, null, "Admin", "ADMIN@PALETTESTUDIO.CA", "ADMIN@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEOx3yYtnYGGcCmF2vYLiAjQRr2wO1NsZFM6bMaEI+GknQkr1sRnjqCTpDbaYShYpEA==", null, false, "b1bd3ca1-4fb2-42d4-ab87-be77a04832b2", false, "admin@palettestudio.ca" });
+                values: new object[] { "dc3fbe21-8f2a-4ac3-9516-91957919b028", 0, "43753f75-0b42-44c9-a071-d08f114e5252", "admin@palettestudio.ca", true, "Palette Studio", "Admin", false, null, "Admin", "ADMIN@PALETTESTUDIO.CA", "ADMIN@PALETTESTUDIO.CA", "AQAAAAEAACcQAAAAEFvyQlUIEjRxCLaV4UKJ2mPlDc6BexWO5wWh6omGGcj3RpPjsa6qKxAMF0+gLYrdUA==", null, false, "f349088a-a39c-40f0-adb8-ee65acd6475e", false, "admin@palettestudio.ca" });
 
             migrationBuilder.InsertData(
                 table: "Colours",

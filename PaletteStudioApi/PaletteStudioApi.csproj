@@ -29,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="palleteStudio.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="palleteStudio.db-shm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

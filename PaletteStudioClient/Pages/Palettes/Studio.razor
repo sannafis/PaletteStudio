@@ -2,6 +2,12 @@
 @inject IPaletteService paletteService
 @inject NavigationManager navManager
 @inject IJSRuntime JsRuntime
+@if (!response.Success)
+{
+    <div class="alert alert-danger">
+        <p>@response.Message</p>
+    </div>
+}
 
 @if (Palette == null)
 {
@@ -15,61 +21,95 @@ else
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <div class="d-flex justify-content-between">
 
-            <button @onclick=@Back class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-chevron-left"></i><span>Back</span></button>
+        @* ******** COLOUR GROUP EDITOR WINDOW ******** *@
+
+        <div class="d-flex justify-content-between">
+            <button class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-chevron-left"></i><span>Back</span></button>
             <div class="d-flex justify-content-between">
                 <button data-toggle="tooltip" data-placement="top" title="The name of your palette is only visible to you and will NOT be shown to others if it is public." class="help-btn circle input-group-text btn btn-primary btn-close-white border border-2" type="button"><i class="fa-solid fa-question"></i></button>
 
                 <label class="col-sm-2 col-form-label" for="name">Name:</label>
-                <input type="text" name="name" class="form-control" id="name" @bind-value="Palette.Name" placeholder="Ex: Cool Palette">
-
-                <button @onclick=@Submit class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
+                <input @bind-value=@Palette.Name type="text" name="name" class="form-control" id="name" placeholder="Ex: Cool Palette">
+                <button class="input-group-text btn btn-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
             </div>
-
         </div>
 
-        <div class="p-0 m-0 w-100 shadow-lg" style="left:0;height:calc(100% - 120px);bottom:0 ;position:absolute">
+        <div class="d-flex flex-column flex-md-row p-0 m-0 w-100 shadow-lg w-100 " style="left:0;height:calc(100% - 120px);bottom:0 ;position:absolute">
+            @if (IsEditExpanded && CurrentlyEditing != null)
+            {
+                <div class="flex-grow-1 position-relative border-end border-bottom border-1 border-dark">
+                    <button @onclick=@CloseEditWindow type="button" class="btn btn-outline-secondary position-absolute end-0 circle border-2 m-3 float-end"><i class="fa-solid fa-x"></i></button>
+
+                    <div class=" d-flex flex-wrap flex-column h-100">
+                        <div class="flex-grow-1 d-flex flex-wrap flex-column-reverse p-0" style="background-color:@CurrentlyEditing.BackgroundColourHexCode;"></div>
 
 
 
-            <div class="palette-view" style="height:99%">
+                        <button id=@($"Hex{CurrentlyEditing.Id}") @onclick=@(()=>ColourHexClick($"Hex{CurrentlyEditing.Id}")) type="button" class="btn btn-outline-light border-0 pr-3 position-absolute top-0" style="left: 43%;text-align:right; padding:10px;">
+                            <DynamicText Text=@CurrentlyEditing!.BackgroundColourHexCode!.ToUpper() ComparisonColour=@CurrentlyEditing!.BackgroundColourHexCode />
+                        </button>
 
-                <div class="rating">
-                    <button>Rating</button>
-                    <button>Rating</button>
-                    <button>Rating</button>
-                    <button>Rating</button>
-                </div>
-
-                <div class=" d-flex flex-nowrap flex-column flex-lg-row p-0 h-100">
-
-
-                    @foreach (var bg in Palette.ColourGroups)
-                    {
-                        <div class="flex-grow-1 d-flex flex-wrap flex-row flex-lg-column h-100 ">
-
-                            <div class="flex-grow-1 d-flex flex-wrap flex-column-reverse" style="background-color:@bg.BackgroundColourHexCode;">
-                            </div>
-                            <div class="flex-grow-1 d-flex flex-lg-row flex-column-reverse" style="max-height:100%">
-
-                                @foreach (var fg in bg.ForegroundColours)
+                        @if (CurrentlyEditing.ForegroundColours.Count > 0)
+                        {
+                            <button @onclick=ToggleSubColoursWindow type="button" class="btn btn-outline-secondary  border-2 position-absolute pt-0 pb-0 @(IsEditColoursExpanded? "bottom-55" : "bottom-0")" style="left: 46%;">
+                                @if (IsEditColoursExpanded)
                                 {
-                                    <div class="flex-grow-1 " style="background-color:@fg.ColourHexCode;"></div>
+                                    <i class="fa-solid fa-chevron-down"></i>
                                 }
+                                else
+                                {
+                                    <i class="fa-solid fa-chevron-up"></i>
+                                }
+                            </button>
 
-                            </div>
-                        </div>
-                    }
+                            @if (IsEditColoursExpanded)
+                            {
+                                <div class="flex-grow-1 flex-wrap d-flex flex-row" style="max-height:100%;">
+
+                                    @foreach (var subColour in CurrentlyEditing.ForegroundColours)
+                                    {
+                                        <div class="flex-grow-1" style="background-color:@subColour.ColourHexCode;">
+                                            <button id=@($"SubHex{subColour.Id}") @onclick=@(()=>ColourHexClick($"SubHex{subColour.Id}")) type="button" class="btn btn-outline-light border-0 pr-3 " style="padding:10px;">
+                                                <DynamicText Text=@subColour.ColourHexCode!.ToUpper() ComparisonColour=@CurrentlyEditing!.BackgroundColourHexCode />
+                                            </button>
+                                        </div>
+
+
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+
                 </div>
+            }
+
+            @* ******** FULL PALETTE VIEW ******** *@
+
+            <div class="flex-grow-1">
 
 
 
+                <div class="palette-view" style="height:100%">
+                    <div class=" d-flex flex-nowrap @paletteOrientCurrent p-0 h-100">
+                        @foreach (var mainColour in Palette.ColourGroups)
+                        {
+                            <div @onclick=@(()=>OpenEditWindow(mainColour)) class="cursor-pointer pe-auto flex-grow-1 d-flex flex-wrap @colourGroupOrientCurrent h-100 @(CurrentlyEditing == mainColour? "border-dotted border-5 border-info border-dotted": "")">
+                                <div class="flex-grow-1 d-flex flex-wrap flex-column-reverse" style="background-color:@mainColour.BackgroundColourHexCode;"></div>
+                                <div class="flex-grow-1 flex-wrap d-flex @subColourOrientCurrent" style="max-height:100%;">
+
+                                    @foreach (var subColour in mainColour.ForegroundColours)
+                                    {
+                                        <div class="flex-grow-1" style="background-color:@subColour.ColourHexCode;"></div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
 
             </div>
-
-
-
 
         </div>
 
@@ -77,16 +117,74 @@ else
 
     </EditForm>
 }
-
+<div class="@colourPickerClass" @onclick=@HideColourPicker style="position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0,0,0,0);">
+<div class="shadow  bg-white p-3 rounded-3 position-absolute" style="z-index:1000;top:@(hexButtonCoords["Y"]+50+"px"); left:@(hexButtonCoords["X"]-75+"px")">
+    <div style="margin-left:85px;margin-top:-30px; border-bottom: calc(0.866 * 30px) solid white;
+  border-left: calc(30px / 2) solid transparent;
+  border-right: calc(30px / 2) solid transparent;
+  border-top: 0;
+  height: 0;
+  width: 0;"></div>
+    <ColourPicker WidthPx="200"/>
+</div>
+</div>
 @code {
+
     [Parameter]
     public int Id { get; set; }
-
 
     private PaletteReadOnlyDto? Palette { get; set; }
 
     Response<PaletteReadOnlyDto> response = new Response<PaletteReadOnlyDto>();
-    Response<bool> responseSubmit = new Response<bool> { Success = false };
+    Response<bool> responseSubmit = new Response<bool> { Success = true };
+
+    // properties for changing between different css classes dynamically
+    private string paletteOrientCurrent { get; set; } = paletteOrientNorm;
+    private string colourGroupOrientCurrent { get; set; } = colourGroupOrientNorm;
+    private string subColourOrientCurrent { get; set; } = subColourOrientNorm;
+
+    // constants for normal orientation of elements
+    private const string paletteOrientNorm = "flex-column flex-md-row";
+    private const string colourGroupOrientNorm = "flex-row flex-md-column";
+    private const string subColourOrientNorm = "flex-md-row flex-column-reverse";
+
+    // constants for orientation of elements when Edit Window is expanded
+    private const string paletteOrientExp = "flex-row flex-md-column";
+    private const string colourGroupOrientExp = "flex-column flex-md-row";
+    private const string subColourOrientExp = "flex-md-column flex-row-reverse";
+
+    private bool IsEditExpanded { get; set; } = false;
+
+    private bool IsEditColoursExpanded { get; set; } = false;
+
+    ColourGroupReadOnlyDto? CurrentlyEditing { get; set; } = null;
+
+    private void OpenEditWindow(ColourGroupReadOnlyDto colourGroup)
+    {
+        IsEditExpanded = true;
+        paletteOrientCurrent = paletteOrientExp;
+        colourGroupOrientCurrent = colourGroupOrientExp;
+        subColourOrientCurrent = subColourOrientExp;
+        CurrentlyEditing = colourGroup;
+    }
+    private void CloseEditWindow()
+    {
+        IsEditExpanded = false;
+        paletteOrientCurrent = paletteOrientNorm;
+        colourGroupOrientCurrent = colourGroupOrientNorm;
+        subColourOrientCurrent = subColourOrientNorm;
+        CurrentlyEditing = null;
+    }
+
+    private void ToggleSubColoursWindow()
+    {
+        IsEditColoursExpanded = !IsEditColoursExpanded;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -97,23 +195,33 @@ else
         }
     }
 
-
-
     private async Task Submit()
     {
-        await JsRuntime.InvokeVoidAsync("alert", "CLICKED");
         responseSubmit = await paletteService.UpdatePalette(Palette!.Id, Palette);
         if (responseSubmit.Success)
         {
-            await JsRuntime.InvokeVoidAsync("alert", $"{responseSubmit.Data}YES");
-        }
-        else
-        {
-            await JsRuntime.InvokeVoidAsync("alert", "NO");
+            await JsRuntime.InvokeVoidAsync("alert", $"Saved");
         }
     }
     private void Back()
     {
         navManager.NavigateTo("/palettes");
+    }
+
+    private Dictionary<string, double> hexButtonCoords = new Dictionary<string, double>() { { "X", 0.0 }, { "Y", 0.0 } };
+    private string colourPickerClass = "d-none";
+
+    private async Task ColourHexClick(string buttonId)
+    {
+        HideColourPicker();
+        hexButtonCoords = await JsRuntime.InvokeAsync<Dictionary<string, double>>("getButtonCoords", $"{buttonId}");
+        ShowColourPicker();
+    }
+
+    private void HideColourPicker(){
+        colourPickerClass = "d-none";
+    }
+    private void ShowColourPicker(){
+        colourPickerClass = "d-content";
     }
 }

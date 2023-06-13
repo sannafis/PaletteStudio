@@ -30,9 +30,36 @@ else
     <div class="d-flex flex-column flex-md-row p-0 m-0 w-100 shadow-lg w-100 " style="left:0;height:calc(100% - 120px);bottom:0 ;position:absolute">
         @if (IsEditExpanded)
         {
-            <div class="flex-grow-1 bg-black position-relative p-0">
-                @*<button type="button" class="btn btn-outline-secondary circle border-2"><i class="fa-solid fa-x"></i></button>*@
-                <button type="button" class="btn btn-outline-secondary m-0 border-2 float-" style="left: 50%; top: 0; bottom: 0;">Open</button>
+            <div class="flex-grow-1 position-relative">
+               <button @onclick=@CloseEditWindow type="button" class="btn btn-outline-secondary position-absolute end-0 circle border-2 m-3 float-end"><i class="fa-solid fa-x"></i></button>
+
+
+
+                <div class=" d-flex flex-wrap flex-column h-100 border border-1 border-danger">
+                    <div class="flex-grow-1 d-flex flex-wrap flex-column-reverse border border-1 border-white" style="background-color:black;"></div>
+
+                    <button @onclick=ToggleSubColoursWindow type="button" class="btn btn-outline-secondary m-0 border-2 bottom-0 position-absolute @(IsEditColoursExpanded? "bottom-50" : "bottom-0")" style="left: 45%;">
+                        @if (IsEditColoursExpanded)
+                        {
+                            <i class="fa-solid fa-chevron-down"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-chevron-up"></i>
+                        }
+                    </button>
+                    @if (IsEditColoursExpanded)
+                    {
+                        <div class="flex-grow-1 flex-wrap d-flex flex-row" style="max-height:100%;">
+
+                            @for (int x = 1; x <= 6; x++)
+                            {
+                                <div class="flex-grow-1 border border-1 border-white" style="background-color:red;"></div>
+                            }
+                    </div>
+                    }
+                </div>
+            
             </div>
         }
         <div class="flex-grow-1">
@@ -121,6 +148,12 @@ else
         set;
     } = false;
 
+    private bool IsEditColoursExpanded
+    {
+        get;
+        set;
+    } = false;
+
     protected override async Task OnInitializedAsync()
     {
         IsEditExpanded = false;
@@ -133,6 +166,19 @@ else
         paletteOrientCurrent = paletteOrientExp;
         colourGroupOrientCurrent = colourGroupOrientExp;
         subColourOrientCurrent = subColourOrientExp;
+    }
+    private void CloseEditWindow()
+    {
+        IsEditExpanded = false;
+        paletteOrientCurrent = paletteOrientNorm;
+        colourGroupOrientCurrent = colourGroupOrientNorm;
+        subColourOrientCurrent = subColourOrientNorm;
+    }
+
+    private void ToggleSubColoursWindow()
+    {
+        OpenEditWindow();
+        IsEditColoursExpanded = !IsEditColoursExpanded;
     }
 
 }

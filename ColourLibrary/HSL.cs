@@ -2,18 +2,18 @@
 
 namespace ColourLibrary
 {
-    public class HSV
+    public class HSL
     {
         private double h;
         private double s;
-        private double v;
+        private double l;
 
         public double H
         {
             get { return Math.Round(h, 2); }
             set
             {
-                if (value < 0)
+                if (value < 0 || Double.IsNaN(value))
                 {
                     h = 0;
                 }
@@ -33,7 +33,7 @@ namespace ColourLibrary
             get { return Math.Round(s, 2); }
             set
             {
-                if (value < 0)
+                if (value < 0 || Double.IsNaN(value))
                 {
                     s = 0;
                 }
@@ -48,36 +48,36 @@ namespace ColourLibrary
             }
         }
 
-        public double V
+        public double L
         {
-            get { return Math.Round(v, 2); }
+            get { return Math.Round(l, 2); }
             set
             {
-                if (value < 0)
+                if (value < 0 || Double.IsNaN(value))
                 {
-                    v = 0;
+                    l = 0;
                 }
                 else if (value > 100)
                 {
-                    v = 100;
+                    l = 100;
                 }
                 else
                 {
-                    v = value;
+                    l = value;
                 }
             }
         }
 
-        public HSV(double hue = 0, double saturation = 0, double value = 0)
+        public HSL(double hue = 0, double saturation = 0, double luminance = 0)
         {
             this.H = hue;
             this.S = saturation;
-            this.V = value;
+            this.L = luminance;
         }
 
         public override string ToString()
         {
-            return $"hsv({this.H},{this.S},{this.V})";
+            return $"hsv({this.H},{this.S},{this.L})";
         }
     }
 }

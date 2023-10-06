@@ -10,7 +10,7 @@ namespace PaletteStudioClient.Models
         [Required(ErrorMessage = "Colour value required")]
         [RegularExpression("^#([0-9a-fA-f]{6}|[0-9a-fA-F]{3})$", ErrorMessage = "Hex value not in proper format")]
         [StringLength(7)]
-        public string HexCode { get; set; } = string.Empty;
+        public string HexCode { get; set; } = "#000000";
 
         public RGB RGB
         {
@@ -19,7 +19,7 @@ namespace PaletteStudioClient.Models
 
         public HSV HSV
         {
-            get { return Cl.Colour.ToHSVFromRGB(this.RGB); }
+            get { return Cl.Colour.ToHSVFromHex(this.HexCode); }
         }
     }
 }

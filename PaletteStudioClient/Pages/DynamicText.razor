@@ -1,6 +1,6 @@
 ﻿@page "/DynamicText"
 
-<div style="color:@CompareContrast()"><strong>@Text</strong></div>
+<div style="color:@(CompareContrast())"><strong>@Text</strong></div>
 
 @code {
     [Parameter]
@@ -19,17 +19,34 @@
     private ColourDto colour2 { get; set; } = new();
     private ColourDto comparisonColour { get; set; } = new();
 
+    private string CurrentColour { get; set; } 
+
     protected override void OnInitialized()
     {
         colour1 = new ColourDto { HexCode = ColourOption1 };
         colour2 = new ColourDto { HexCode = ColourOption2 };
         comparisonColour = new ColourDto { HexCode = ComparisonColour };
+        CurrentColour = CompareContrast();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            colour1 = new ColourDto { HexCode = ColourOption1 };
+            colour2 = new ColourDto { HexCode = ColourOption2 };
+            comparisonColour = new ColourDto { HexCode = ComparisonColour };
+            CurrentColour = CompareContrast();
+        }
+
+        return base.OnAfterRenderAsync(firstRender);
     }
 
     private string CompareContrast()
     {
-        double contrast1 = Colour.ContrastRatio(colour1.RGB, comparisonColour.RGB);
-        double contrast2 = Colour.ContrastRatio(colour2.RGB, comparisonColour.RGB);
+        double contrast1 = Colour.ContrastRatio(ColourOption1, ComparisonColour);
+        double contrast2 = Colour.ContrastRatio(ColourOption2, ComparisonColour);
 
         return contrast1 > contrast2 ? colour1.HexCode : colour2.HexCode;
     }

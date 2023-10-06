@@ -55,7 +55,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="ColourTests.cs" />
+    <Compile Include="Tests_Contrast.cs" />
+    <Compile Include="Tests_Luminance.cs" />
+    <Compile Include="Tests_ToRGB.cs" />
+    <Compile Include="Tests_ToHSV.cs" />
+    <Compile Include="Tests_ToHex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

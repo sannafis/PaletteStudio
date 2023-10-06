@@ -2,38 +2,288 @@
 @inject IJSRuntime JS
 @using ColourLibrary
 
-<div class="d-flex flex-column" style="width:@(WidthPx != null? WidthPx+"px" : "100px")">
-    <div id="colourPreview" class="w-100 mb-1" style="background-color:@CurrentColour.HexCode"></div>
+<div class="d-flex flex-column" style="width:@(WidthPx != null? WidthPx+"px" : "250px")">
+    <div id="colourPreview" class="rounded-1 w-100 mb-2 shadow-sm position-relative" style="background-color:@CurrentColour.HexCode"></div>
     <div class="d-flex position-relative">
-        <svg class="bg-none flex-shrink-1 w-100 h-100 position-absolute pe-none">
-            <circle id="selector" class="selector" cx="50%" cy="50%" r="3%" style="fill: rgba(@(CurrentColour.RGB.R),@(CurrentColour.RGB.G),@(CurrentColour.RGB.B),1);" />
-        </svg>
-        <canvas id="colourCanvas" @onmousedown="MouseDown" @onmousemove="MouseMoved" @onmouseup="MouseUp" @onmouseout="MouseOut">
+        <canvas id="colourCanvas" class="" @onmousedown="MouseDown" @onmousemove="MouseMoved" @onmouseup="MouseUp" @onmouseout="MouseOut"
+                style="aspect-ratio:90/49">
         </canvas>
+        <svg class="colourpicker-selector bg-none flex-shrink-1 flex-grow-1  pe-none position-absolute" style=" z-index:100000000; margin-top:-2px; height:calc(100% + 4px); margin-left:-2px; width:calc(100% + 4px);">
+            <circle id="selector" class="selector" cx="@(Saturation)%" cy="@(100-Value)%" r="10px" style="fill: rgba(@(CurrentColour.RGB.R),@(CurrentColour.RGB.G),@(CurrentColour.RGB.B),1);" />
+        </svg>
     </div>
-    <input type="range" min="0" max="100" value="50" class="w-100 rounded-pill mt-1" id="saturationSlider" @oninput="SaturationChanged" style="background: linear-gradient(90deg, hsl(@(CurrentColour.HSV.H), 100%, 50%, 1) 0%, rgb(128, 128, 128, 1) 100%);">
+    <input type="range" min="0" max="360" step="0.01" @bind-value=@Hue class="w-100 rounded-1 mt-2" id="saturationSlider"
+           @oninput=@HueChanged
+           style="background: linear-gradient(90deg, #ff0000, #ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000);">
+    <select type="" step="1" min="0" max="360" class="form-control mt-2" @bind=@Mode>
+        @foreach (var mode in Enum.GetValues(typeof(ColourPickerMode)))
+        {
+            <option value=@mode>@mode</option>
+        }
+    </select>
+    <div class="row mt-2">
+        @{
+            switch (Mode)
+            {
+                case ColourPickerMode.HSV:
+
+                    <div class="col">
+                        <input type="number" step="1" min="0" max="360" @onkeyup=@KeyUp @onblur=@SetColourPicker @bind-value="@Hue" class="form-control p-1" />
+                    </div>
+                    <div class="col p-0">
+                        <input type="number" step="1" min="0" max="100" @onkeyup=@KeyUp @onblur=@SetColourPicker @bind-value="@Saturation" class="form-control p-1" />
+                    </div>
+                    <div class="col">
+                        <input type="number" step="1" min="0" max="100" @onkeyup=@KeyUp @onblur=@SetColourPicker @bind-value="@Value" class="form-control p-1" />
+                    </div>
+                    break;
+                case ColourPickerMode.RGB:
+                    <div class="col">
+                        <input type="number" step="1" min="0" max="255" @onkeyup=@KeyUp @onblur=@SetColourPicker @bind-value="@Red" class="form-control p-1" />
+                    </div>
+                    <div class="col p-0">
+                        <input type="number" step="1" min="0" max="255" @onkeyup=@KeyUp @onblur=@SetColourPicker @bind-value="@Green" class="form-control p-1" />
+                    </div>
+                    <div class="col">
+                        <input type="number" step="1" min="0" max="255" @onkeyup=@KeyUp @onblur=@SetColourPicker @bind-value="@Blue" class="form-control p-1" />
+                    </div>
+                    break;
+            }
+        }
+    </div>
 </div>
 
+<p>
+    Hex: @CurrentColour.HexCode
+    <br />
+    H: @CurrentColour.HSV.H |   S: @CurrentColour.HSV.S |   V: @CurrentColour.HSV.V - @(100 - (Value))
+    <br />
+    R: @CurrentColour.RGB.R |   G: @CurrentColour.RGB.G |   B: @CurrentColour.RGB.B
+</p>
+
+
 @code {
-    [Parameter]
-    public ColourDto? colourToEdit { get; set; }
+    [Parameter] public Func<bool>? ShouldReRender { get; set; }
+
+    private ColourDto? colourToEdit;
 
     [Parameter]
-    public string WidthPx { get; set; } = "100";
+    public ColourDto? ColourToEdit { get { return colourToEdit; } set { colourToEdit = value; } }
+    [Parameter]
+    public ForegroundColourReadOnlyDto? foregroundColour { get; set; }
+    [Parameter]
+    public ColourGroupReadOnlyDto? backgroundColour { get; set; }
 
     [Parameter]
-    public EventCallback<ColourDto> OnClickCallback { get; set; }
+    public string? WidthPx { get; set; }
 
-    private ColourDto CurrentColour = new ColourDto { HexCode = "#ffffff" };
+    [Parameter]
+    public EventCallback<string> OnClickCallback { get; set; }
+
+
+    private ColourDto currentColour;
+
+    [Parameter]
+    public ColourDto CurrentColour
+    {
+        get { return currentColour; }
+        set { 
+            currentColour = value == null? new ColourDto { HexCode = "#ff0000" } : value;
+
+        }
+    }
 
     private bool mouseMoved = false;
     private bool mouseDown = false;
 
+    private double HSVhue;
+    private double HSVsaturation;
+    private double HSVvalue;
+
+    public double Hue { get { return Math.Round(HSVhue, 2); } set { HSVhue = value; } }
+    public double Saturation { get { return Math.Round(HSVsaturation, 2); } set { HSVsaturation = value; } }
+    public double Value { get { return Math.Round(HSVvalue, 2); } set { HSVvalue = value; } }
+
+    public int Red { get; set; }
+    public int Green { get; set; }
+    public int Blue { get; set; }
+
+    private ColourPickerMode mode;
+    private ColourPickerMode Mode
+    {
+        get { return mode; }
+        set
+        {
+            switch (value)
+            {
+                case ColourPickerMode.RGB:
+                    Red = CurrentColour.RGB.R;
+                    Green = CurrentColour.RGB.G;
+                    Blue = CurrentColour.RGB.B;
+                    mode = value;
+                    break;
+                case ColourPickerMode.HSV:
+                default:
+                    mode = ColourPickerMode.HSV;
+                    break;
+            }
+            mode = value;
+        }
+    }
+
+    public enum ColourPickerMode
+    {
+        HSV,
+        RGB
+    }
+
+    private async Task HueChanged()
+    {
+
+        //Red = CurrentColour.RGB.R;
+        //Green = CurrentColour.RGB.G;
+        //Blue = CurrentColour.RGB.B;
+
+        await SetColourPicker();
+    }
+
+    private async Task KeyUp(KeyboardEventArgs key)
+    {
+        if (key.Key.Equals("Enter"))
+        {
+            await SetColourPicker();
+        }
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender)
+        {
+
+            CurrentColour = colourToEdit == null ? new ColourDto { HexCode = "#ff0000" } : colourToEdit;
+
+            //await JS.InvokeVoidAsync("alert", "First REnder");
+            Hue = CurrentColour.HSV.H;
+            Saturation = CurrentColour.HSV.S;
+            Value = CurrentColour.HSV.V;
+            Red = CurrentColour.RGB.R;
+            Green = CurrentColour.RGB.G;
+            Blue = CurrentColour.RGB.B;
+
+            await SetColourPicker();
+        }
+        await JS.InvokeVoidAsync("setupEvents");
+    }
+
+    private async Task<HSV> ToHSV(int r, int g, int b)
+    {
+        return Colour.ToHSVFromRGB(new RGB { R = r, G = g, B = b });
+    }
+
+    private async Task<RGB> ToRGB(double h, double s, double v)
+    {
+        return Colour.ToRGBFromHSV(new HSV { H = h, S = s, V = v });
+    }
+
+    private async Task SetColourValues(){
+        //Hue = currentColour.HSV.H;
+        //Saturation = currentColour.HSV.S;
+        //Value = currentColour.HSV.V;
+        //Red = currentColour.RGB.R;
+        //Green = currentColour.RGB.G;
+        //Blue = currentColour.RGB.B;
+
+        if (colourToEdit != null)
+        {
+            // await JS.InvokeVoidAsync("alert", "External COlour");
+
+            //Hue = colourToEdit.HSV.H;
+            //Saturation = colourToEdit.HSV.S;
+            //Value = colourToEdit.HSV.V;
+            //Red = colourToEdit.RGB.R;
+            //Green = colourToEdit.RGB.G;
+            //Blue = colourToEdit.RGB.B;
+            CurrentColour = colourToEdit;
+        }
+    }
+
+    private async Task<string> FromRGB(){
+        return Colour.ToHexFromRGB(new RGB { R = Red, G = Green, B = Blue });
+    }
+    
+    private async Task<string> FromHSV(){
+        return Colour.ToHexFromHSV(new HSV { H = Hue, S = Saturation, V = Value });
+    }
+    // TODO: FIX COLOUR LIBRARY AND IMPLEMENT ALL TESTS
+
+    public async Task SetColourPicker()
+    {
+        //await JS.InvokeVoidAsync("alert", "Setting Colour Picker");
+
+
+        await SetColourValues();
+
+
+        if(Mode == ColourPickerMode.RGB){
+            //RGB current = CurrentColour.RGB;
+
+            //HSV hsv = await ToHSV(Red, Green, Blue);
+
+            //Hue = hsv.H;
+            //Saturation = hsv.S;
+            //Value = hsv.V;
+
+            CurrentColour.HexCode = await FromRGB() ;
+        }else{
+            //HSV current = CurrentColour.HSV;
+            //RGB rgb = await ToRGB(current.H, current.S, current.V);
+
+            //Red = rgb.R;
+            //Green = rgb.G;
+            //Blue = rgb.B;
+
+
+            CurrentColour.HexCode = await FromHSV();
+
+
+        }
+
+
         int[] newColour = await JS.InvokeAsync<int[]>("initColourPicker");
         await ChangeColour(Colour.ToHexFromRGB(new RGB(newColour[0], newColour[1], newColour[2])));
 
+        // await JS.InvokeVoidAsync("alert", "Colour Picker Set");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await JS.InvokeVoidAsync("alert", "Initializing");
+
+
+
+
+        CurrentColour = colourToEdit == null ? new ColourDto { HexCode = "#ff0000" } : colourToEdit;
+
+        Hue = CurrentColour.HSV.H;
+        Saturation = CurrentColour.HSV.S;
+        Value = CurrentColour.HSV.V;
+        Red = CurrentColour.RGB.R;
+        Green = CurrentColour.RGB.G;
+        Blue = CurrentColour.RGB.B;
+
+
+        await JS.InvokeVoidAsync("setupEvents");
+
+
+        if (Hue != CurrentColour.HSV.H && Saturation != CurrentColour.HSV.S && Value != CurrentColour.HSV.V && colourToEdit != null)
+        {
+            // await JS.InvokeVoidAsync("alert", "Editing External Colour");
+
+            CurrentColour = colourToEdit;
+
+            int[] newColour = await JS.InvokeAsync<int[]>("initColourPicker");
+            await ChangeColour(Colour.ToHexFromRGB(new RGB(newColour[0], newColour[1], newColour[2])));
+        }
     }
 
     public async Task MouseMoved(MouseEventArgs e)
@@ -50,6 +300,13 @@
         mouseDown = false;
         int[] newColour = await JS.InvokeAsync<int[]>("moveSelector", e);
         await ChangeColour(Colour.ToHexFromRGB(new RGB(newColour[0], newColour[1], newColour[2])));
+        //Saturation = CurrentColour.HSV.S;
+        //Value = CurrentColour.HSV.V;
+
+        //Red = CurrentColour.RGB.R;
+        //Green = CurrentColour.RGB.G;
+        //Blue = CurrentColour.RGB.B;
+
 
     }
 
@@ -63,13 +320,6 @@
         mouseDown = true;
     }
 
-    private async Task SaturationChanged()
-    {
-        int[] newColour = await JS.InvokeAsync<int[]>("initColourPicker");
-        await ChangeColour(Colour.ToHexFromRGB(new RGB(newColour[0], newColour[1], newColour[2])));
-
-    }
-
     private async void ColourChanged()
     {
         await JS.InvokeVoidAsync("Log");
@@ -77,12 +327,25 @@
 
     private async Task ChangeColour(string newColour)
     {
+        // await JS.InvokeVoidAsync("alert", "ChangeColour");
+
         CurrentColour.HexCode = newColour;
         if (colourToEdit != null)
         {
-            colourToEdit!.HexCode = colourToEdit == null ? newColour : string.Empty;
-            await OnClickCallback!.InvokeAsync(CurrentColour);
+            if (foregroundColour != null)
+            {
+                foregroundColour.ColourHexCode = newColour;
+            }
+            else if (backgroundColour != null)
+            {
+                backgroundColour.BackgroundColourHexCode = newColour;
+            }
+
+            await OnClickCallback!.InvokeAsync(CurrentColour.HexCode);
         }
+
+
+
         Console.WriteLine(newColour);
     }
 }

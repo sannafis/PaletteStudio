@@ -45,12 +45,12 @@ namespace PaletteStudioApi.Repositories
         public async Task<string> GenerateToken()
         {
             // Default key for demo purposes
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
 
-            if (_environment.IsDevelopment()) // get actual secret key while in development
-            {
-                securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
-            }
+            //if (_environment.IsDevelopment()) // get actual secret key while in development
+            //{
+            //    securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
+            //}
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var roles = await _userManager.GetRolesAsync(_user!);
@@ -113,10 +113,10 @@ namespace PaletteStudioApi.Repositories
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.ReadJwtToken(request.Token);
-            var username = token.Claims.ToList().FirstOrDefault(c=>c.Type == JwtRegisteredClaimNames.Email)?.Value;
+            var username = token.Claims.ToList().FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
             _user = await _userManager.FindByNameAsync(username);
 
-            if(_user == null || _user.Id != request.UserId)
+            if (_user == null || _user.Id != request.UserId)
             {
                 return null;
             }
@@ -140,7 +140,7 @@ namespace PaletteStudioApi.Repositories
 
         public async Task<bool> UserExists(string email)
         {
-            if(await _userManager.FindByEmailAsync(email) != null)
+            if (await _userManager.FindByEmailAsync(email) != null)
             {
                 return true;
             }
@@ -152,7 +152,7 @@ namespace PaletteStudioApi.Repositories
             // get current user id from token
             var userId = _httpContext.HttpContext!.User.FindFirstValue("uid");
             var user = await _userManager.FindByIdAsync(userId);
-            if(user == null)
+            if (user == null)
             {
                 throw new UnauthorizedException(nameof(User), "(Not a valid Id)");
             }

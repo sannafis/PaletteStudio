@@ -1,140 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
 
 namespace ColourLibrary
 {
-    public static class Colour
+    public static partial class Colour
     {
-        public static RGB ToRGBFromHex(string hex)
-        {
-            string hexInput = hex.Trim().Replace("#", "").Replace(" ", "");
-
-            if (hex == null) throw new ArgumentNullException("Hex value is null.");
-
-            int r, g, b;
-
-            if (hexInput.Length == 3)
-            {
-                r = int.Parse(hexInput[0].ToString(), NumberStyles.HexNumber) * 16 + int.Parse(hexInput[0].ToString(), NumberStyles.HexNumber);
-                g = int.Parse(hexInput[1].ToString(), NumberStyles.HexNumber) * 16 + int.Parse(hexInput[1].ToString(), NumberStyles.HexNumber);
-                b = int.Parse(hexInput[2].ToString(), NumberStyles.HexNumber) * 16 + int.Parse(hexInput[2].ToString(), NumberStyles.HexNumber);
-
-                return new RGB(r, g, b);
-            }
-            else if (hexInput.Length == 6)
-            {
-                r = int.Parse(hexInput[0].ToString(), NumberStyles.HexNumber) * 16 + int.Parse(hexInput[1].ToString(), NumberStyles.HexNumber);
-                g = int.Parse(hexInput[2].ToString(), NumberStyles.HexNumber) * 16 + int.Parse(hexInput[3].ToString(), NumberStyles.HexNumber);
-                b = int.Parse(hexInput[4].ToString(), NumberStyles.HexNumber) * 16 + int.Parse(hexInput[5].ToString(), NumberStyles.HexNumber);
-
-                return new RGB(r, g, b);
-            }
-            else
-            {
-                throw new ArgumentException("Hex value must have either 3 or 6 characters.");
-            }
-        }
-
-        /// <summary>
-        /// Formulas: R/16 = x + y/16.
-        /// G/16 = x' + y'/16.
-        /// B/16 = x'' + y''/16.
-        /// returns a hex colour string. Ex: #000000
-        /// </summary>
-        /// <param name="r">Red value</param>
-        /// <param name="g">Green value</param>
-        /// <param name="b">Blue value</param>
-        public static string ToHexFromRGB(RGB rgb)
-        {
-
-            List<int> variables = new List<int> { }; // List of each pair of x and y values
-            string hexString = ""; // resulting hex string
-
-            foreach (int value in new int[] { rgb.R, rgb.G, rgb.B }) // determine the x and y values for each colour value
-            {
-                double v = (Double)value / 16;
-                int x = (Int32)Math.Truncate(v); // x is the integer of value/16
-                int y = (Int32)(v % 1 * 16); // y is the remainder * 16
-
-                // add x and y to list
-                variables.Add(x);
-                variables.Add(y);
-            }
-
-            foreach (var variable in variables)
-            {
-                hexString += variable.ToString("X"); // convert each value to hex and add it to the string
-            }
-
-            if (hexString.Length != 6)
-            {
-                throw new Exception("Something went wrong. Make sure you have entered valid RGB values");
-            }
-
-            return "#" + hexString;
-        }
-
-        public static HSV ToHSVFromRGB(RGB rgb)
-        {
-            // dividing rgb values by 255 so they are in a range of 0-1
-            double r = rgb.R / 255.0;
-            double g = rgb.G / 255.0;
-            double b = rgb.B / 255.0;
-
-            // calculate max and min values of rgb
-            double max = Math.Max(r, Math.Max(g, b));
-            double min = Math.Min(r, Math.Min(g, b));
-            double difference = max - min;
-
-            int h = -1, s = -1, v = -1;
-
-            // Calculate Hue
-            if (max == min) // min and max values are equal
-            {
-                h = 0;
-            }
-            else if (max == r) // red is the max value
-            {
-                h = (Int32)((60 * ((g - b) / difference) + 360) % 360);
-            }
-            else if (max == g) // green is max value
-            {
-                h = (Int32)((60 * ((b - r) / difference) + 120) % 360);
-            }
-            else if (max == b) // blue is max value
-            {
-                h = (Int32)((60 * ((r - g) / difference) + 240) % 360);
-            }
-
-            // Calculate Saturation
-            if (max == 0)
-            {
-                s = 0;
-            }
-            else
-            {
-                s = (Int32)((difference / max) * 100);
-            }
-
-            // Calculate Value
-            v = (Int32)(max * 100);
-
-            return new HSV(h, s, v);
-
-        }
-
-        public static HSV ToHSVFromHex(string hex)
-        {
-            RGB rgb = ToRGBFromHex(hex);
-            HSV hsv = ToHSVFromRGB(new RGB(rgb.R, rgb.G, rgb.B));
-            return hsv;
-        }
-
         public static double Luminance(RGB rgb)
         {
             double[] rgbArray = { rgb.R, rgb.G, rgb.B };
@@ -148,7 +18,6 @@ namespace ColourLibrary
             // L = 0.2126 * R + 0.7152 * G + 0.0722 + B
 
             return 0.2126 * rgbArray[0] + 0.7152 * rgbArray[1] + 0.0722 * rgbArray[2];
-
         }
 
         public static double ContrastRatio(RGB rgb1, RGB rgb2, out string ratio)
@@ -166,7 +35,6 @@ namespace ColourLibrary
             ratio = $"{(contrast.ToString("F").Contains(".00") ? Math.Truncate(contrast).ToString() : contrast.ToString("F"))}:1";
 
             return contrast;
-
         }
 
         public static double ContrastRatio(RGB rgb1, RGB rgb2)
@@ -181,9 +49,8 @@ namespace ColourLibrary
             double contrast = Math.Truncate(((brightest + 0.05) / (darkest + 0.05)) * 100) / 100;
 
             return contrast;
-
         }
-        
+
         public static double ContrastRatio(string hex1, string hex2, out string ratio)
         {
             // convert hex colours to RGB
@@ -203,9 +70,8 @@ namespace ColourLibrary
             ratio = $"{(contrast.ToString("F").Contains(".00") ? Math.Truncate(contrast).ToString() : contrast.ToString("F"))}:1";
 
             return contrast;
+        }
 
-        }      
-        
         public static double ContrastRatio(string hex1, string hex2)
         {
             // convert hex colours to RGB
@@ -222,7 +88,6 @@ namespace ColourLibrary
             double contrast = Math.Truncate(((brightest + 0.05) / (darkest + 0.05)) * 100) / 100;
 
             return contrast;
-
         }
 
         public static string RegularTextRating(double contrast)
@@ -252,7 +117,6 @@ namespace ColourLibrary
                 return "AA";
             }
             return "Fail";
-
         }
     }
 }

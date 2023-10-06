@@ -1,7 +1,7 @@
 ﻿@page "/studio/{Id:int}"
 @inject IPaletteService paletteService
 @inject NavigationManager navManager
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JS
 @if (!response.Success)
 {
     <div class="alert alert-danger">
@@ -22,10 +22,10 @@ else
         <ValidationSummary />
 
 
-        @* ******** COLOUR GROUP EDITOR WINDOW ******** *@
+
 
         <div class="d-flex justify-content-between">
-            <button class="input-group-text btn btn-primary" type="button"><i class="fa-solid fa-chevron-left"></i><span>Back</span></button>
+            <button @onclick=@Back class="input-group-text btn btn-primary" type="button" data-toggle="tooltip" data-placement="bottom" title="Changes will not be saved."><i class="fa-solid fa-chevron-left"></i><span>Back</span></button>
             <div class="d-flex justify-content-between">
                 <button data-toggle="tooltip" data-placement="top" title="The name of your palette is only visible to you and will NOT be shown to others if it is public." class="help-btn circle input-group-text btn btn-primary btn-close-white border border-2" type="button"><i class="fa-solid fa-question"></i></button>
 
@@ -35,7 +35,9 @@ else
             </div>
         </div>
 
-        <div class="d-flex flex-column flex-md-row p-0 m-0 w-100 shadow-lg w-100 " style="left:0;height:calc(100% - 120px);bottom:0 ;position:absolute">
+        @* ******** COLOUR GROUP EDITOR WINDOW ******** *@
+
+        <div class="d-flex flex-column flex-md-row p-0 m-0 w-100 shadow-lg w-100 " style="transition:width 1s ease-in-out; left:0;height:calc(100% - 120px);bottom:0 ;position:absolute">
             @if (IsEditExpanded && CurrentlyEditing != null)
             {
                 <div class="flex-grow-1 position-relative border-end border-bottom border-1 border-dark">
@@ -46,7 +48,7 @@ else
 
 
 
-                        <button id=@($"Hex{CurrentlyEditing.Id}") @onclick=@(()=>ColourHexClick($"Hex{CurrentlyEditing.Id}")) type="button" class="btn btn-outline-light border-0 pr-3 position-absolute top-0" style="left: 43%;text-align:right; padding:10px;">
+                        <button id=@($"Hex{CurrentlyEditing.Id}") @onclick=@(()=>ColourHexClick($"Hex{CurrentlyEditing.Id}")) type="button" class="hover-trans-white btn btn-outline-light border-0 pr-3 position-absolute top-0" style="left: 43%;text-align:right; padding:10px;">
                             <DynamicText Text=@CurrentlyEditing!.BackgroundColourHexCode!.ToUpper() ComparisonColour=@CurrentlyEditing!.BackgroundColourHexCode />
                         </button>
 
@@ -70,7 +72,7 @@ else
                                     @foreach (var subColour in CurrentlyEditing.ForegroundColours)
                                     {
                                         <div class="flex-grow-1" style="background-color:@subColour.ColourHexCode;">
-                                            <button id=@($"SubHex{subColour.Id}") @onclick=@(()=>ColourHexClick($"SubHex{subColour.Id}")) type="button" class="btn btn-outline-light border-0 pr-3 " style="padding:10px;">
+                                            <button id=@($"SubHex{subColour.Id}") @onclick=@(()=>ColourHexClick($"SubHex{subColour.Id}")) type="button" class="hover-trans-white btn btn-outline-light border-0 pr-3 " style="padding:10px;">
                                                 <DynamicText Text=@subColour.ColourHexCode!.ToUpper() ComparisonColour=@CurrentlyEditing!.BackgroundColourHexCode />
                                             </button>
                                         </div>
@@ -87,7 +89,7 @@ else
 
             @* ******** FULL PALETTE VIEW ******** *@
 
-            <div class="flex-grow-1">
+            <div class="flex-grow-1" style="transition:width 1s ease-in-out; max-width:10000px">
 
 
 
@@ -123,15 +125,15 @@ else
     bottom: 0;
     right: 0;
     background: rgba(0,0,0,0);">
-<div class="shadow  bg-white p-3 rounded-3 position-absolute" style="z-index:1000;top:@(hexButtonCoords["Y"]+50+"px"); left:@(hexButtonCoords["X"]-75+"px")">
+</div>
+<div class="@colourPickerClass shadow bg-white p-3 rounded-3 position-absolute" style="z-index:1000;top:@(hexButtonCoords["Y"]+50+"px"); left:@(hexButtonCoords["X"]-75+"px")">
     <div style="margin-left:85px;margin-top:-30px; border-bottom: calc(0.866 * 30px) solid white;
   border-left: calc(30px / 2) solid transparent;
   border-right: calc(30px / 2) solid transparent;
   border-top: 0;
   height: 0;
   width: 0;"></div>
-    <ColourPicker WidthPx="200"/>
-</div>
+    <ColourPicker WidthPx="200" />
 </div>
 @code {
 
@@ -200,7 +202,7 @@ else
         responseSubmit = await paletteService.UpdatePalette(Palette!.Id, Palette);
         if (responseSubmit.Success)
         {
-            await JsRuntime.InvokeVoidAsync("alert", $"Saved");
+            await JS.InvokeVoidAsync("alert", $"Saved");
         }
     }
     private void Back()
@@ -214,14 +216,16 @@ else
     private async Task ColourHexClick(string buttonId)
     {
         HideColourPicker();
-        hexButtonCoords = await JsRuntime.InvokeAsync<Dictionary<string, double>>("getButtonCoords", $"{buttonId}");
+        hexButtonCoords = await JS.InvokeAsync<Dictionary<string, double>>("getButtonCoords", $"{buttonId}");
         ShowColourPicker();
     }
 
-    private void HideColourPicker(){
+    private void HideColourPicker()
+    {
         colourPickerClass = "d-none";
     }
-    private void ShowColourPicker(){
+    private void ShowColourPicker()
+    {
         colourPickerClass = "d-content";
     }
 }

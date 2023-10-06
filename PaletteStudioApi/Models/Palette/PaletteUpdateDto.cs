@@ -5,7 +5,7 @@ namespace PaletteStudioApi.Models {
     [ModelMetadataType(typeof(PaletteMetaData))]
     public class PaletteUpdateDto : BaseDto
     {
-        public string Name { get; set; } = "Untitled";
+        public string? Name { get; set; } = "Untitled";
 
         public string Privacy { get; set; } = PrivacySetting.Private;
 

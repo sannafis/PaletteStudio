@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PaletteStudioApi.Models.Authentication;
 using PaletteStudioApi.Static;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaletteStudioApi.Models
 {
@@ -9,7 +11,7 @@ namespace PaletteStudioApi.Models
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = "Untitled";
+        public string? Name { get; set; } = "Untitled";
 
         public string Privacy { get; set; } = PrivacySetting.Private;
 

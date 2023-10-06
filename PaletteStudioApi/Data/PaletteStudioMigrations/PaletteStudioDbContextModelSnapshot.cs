@@ -46,14 +46,14 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         new
                         {
                             Id = "608616ab-2cb2-4823-9021-b11452f80986",
-                            ConcurrencyStamp = "6e22e3f8-bb05-462e-acf1-4522eb226e53",
+                            ConcurrencyStamp = "f94676a2-d93f-4ea4-bee0-283d3dd9194f",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "0e97e6f5-e05f-43fd-b33f-bdb6ff465658",
-                            ConcurrencyStamp = "9faab77f-5aa8-4d18-9691-266c3aec6ad3",
+                            ConcurrencyStamp = "654c20c1-0498-4c1c-a732-3aabe39282fd",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -250,7 +250,7 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         {
                             Id = "dc3fbe21-8f2a-4ac3-9516-91957919b028",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e4eb65f5-21f0-435e-baee-c335a1f9e3a7",
+                            ConcurrencyStamp = "43753f75-0b42-44c9-a071-d08f114e5252",
                             Email = "admin@palettestudio.ca",
                             EmailConfirmed = true,
                             FirstName = "Palette Studio",
@@ -259,9 +259,9 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                             Nickname = "Admin",
                             NormalizedEmail = "ADMIN@PALETTESTUDIO.CA",
                             NormalizedUserName = "ADMIN@PALETTESTUDIO.CA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPOguBI1oNotTAorFqt+LUoM40pieunhExEnCGIbVLLoGvGQjKctckM7V6vxY4gdZA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFvyQlUIEjRxCLaV4UKJ2mPlDc6BexWO5wWh6omGGcj3RpPjsa6qKxAMF0+gLYrdUA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ce111549-771f-4a90-9647-bf43c73e222b",
+                            SecurityStamp = "f349088a-a39c-40f0-adb8-ee65acd6475e",
                             TwoFactorEnabled = false,
                             UserName = "admin@palettestudio.ca"
                         },
@@ -269,7 +269,7 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         {
                             Id = "354492fe-30eb-4261-b5b1-4a291cb4001d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a8c91896-886f-4d0c-a4eb-51de83fcfd90",
+                            ConcurrencyStamp = "0fc256d8-a3a7-4546-8ecc-9331d5176b02",
                             Email = "user@palettestudio.ca",
                             EmailConfirmed = true,
                             FirstName = "Palette Studio",
@@ -278,9 +278,9 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                             Nickname = "Test User",
                             NormalizedEmail = "USER@PALETTESTUDIO.CA",
                             NormalizedUserName = "USER@PALETTESTUDIO.CA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEApvd943UGqbyvc3JgFd+uKNO7c8uMlgrV/9RLgg90OWx7hBPq2xuXWGb7ugapd8HA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELEVER90UBKtwQHt+CsjFwPfs6TgyR+MIt+SEND5hvU54U+a4YtXW9wvqTElx7t4xw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "07ea4d9b-7fd5-4fbb-b38e-fcd5133b494b",
+                            SecurityStamp = "468e9f0c-ef45-4b4c-bc6b-50171af2c14e",
                             TwoFactorEnabled = false,
                             UserName = "user@palettestudio.ca"
                         });
@@ -349,10 +349,9 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("BackgroundColourHexCode")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PaletteId")
+                    b.Property<int?>("PaletteId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -402,11 +401,10 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ColourGroupId")
+                    b.Property<int?>("ColourGroupId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ColourHexCode")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -581,15 +579,11 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                 {
                     b.HasOne("PaletteStudioApi.Models.Colour", "BackgroundColour")
                         .WithMany("ColourGroups")
-                        .HasForeignKey("BackgroundColourHexCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BackgroundColourHexCode");
 
                     b.HasOne("PaletteStudioApi.Models.Palette", "Palette")
                         .WithMany("ColourGroups")
-                        .HasForeignKey("PaletteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PaletteId");
 
                     b.Navigation("BackgroundColour");
 
@@ -600,15 +594,11 @@ namespace PaletteStudioApi.Data.PaletteStudioMigrations
                 {
                     b.HasOne("PaletteStudioApi.Models.ColourGroup", "ColourGroup")
                         .WithMany("ForegroundColours")
-                        .HasForeignKey("ColourGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ColourGroupId");
 
                     b.HasOne("PaletteStudioApi.Models.Colour", "Colour")
                         .WithMany("ForegroundColours")
-                        .HasForeignKey("ColourHexCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ColourHexCode");
 
                     b.Navigation("Colour");
 

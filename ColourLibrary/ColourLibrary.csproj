@@ -41,7 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Colour_ToHex.cs" />
+    <Compile Include="Colour_HSVHSL.cs" />
+    <Compile Include="Colour_ToRGB.cs" />
     <Compile Include="Colour.cs" />
+    <Compile Include="HSL.cs" />
     <Compile Include="HSV.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGB.cs" />

@@ -37,7 +37,7 @@ namespace PaletteStudioApi.Repositories
 
             // get items with paging parameters
             var colours = await _context.Set<Colour>()
-                .Skip(pagingParameters.StartIndex)
+                .Skip((pagingParameters.PageNumber - 1) * pagingParameters.PageSize)
                 .Take(pagingParameters.PageSize)
                 .ProjectTo<ColourDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
@@ -45,9 +45,9 @@ namespace PaletteStudioApi.Repositories
             return new PagedData<ColourDto>
             {
                 Items = colours,
-                PageNumber = pagingParameters.StartIndex,
-                RecordNumber = pagingParameters.PageSize,
-                TotalCount = totalSize
+                PageNumber = pagingParameters.PageNumber,
+                PageSize = pagingParameters.PageSize,
+                TotalCount = (Int32)Math.Ceiling((Decimal)(totalSize / pagingParameters.PageSize)),
             };
         }
 
@@ -55,7 +55,7 @@ namespace PaletteStudioApi.Repositories
         {
             colour.HexCode = colour.HexCode.ToUpper();
 
-            await _context.AddAsync(colour);
+            await _context.Colours.AddAsync(_mapper.Map<Colour>(colour));
             await _context.SaveChangesAsync();
 
             // map back to dto object
@@ -78,13 +78,13 @@ namespace PaletteStudioApi.Repositories
 
         public async Task<bool> Exists(string hex)
         {
-            var entity = await GetAsync(hex);
+            var entity = await GetEntityAsync(hex);
             return entity != null;
         }
 
         public async Task<Colour?> GetEntityAsync(string? hex)
         {
-            return await _context.Set<Colour>().FirstOrDefaultAsync(c => c.HexCode.ToUpper().Equals(hex.ToUpper()));
+            return await _context.Set<Colour>().FindAsync(hex.ToUpper());
         }
 
         public async Task<ColourDto> GetAsync(string? hex)

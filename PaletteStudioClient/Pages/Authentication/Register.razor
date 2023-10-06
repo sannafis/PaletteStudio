@@ -1,0 +1,63 @@
+﻿@page "/auth/register"
+@inject IClient httpClient
+@inject NavigationManager navManager
+
+<h3>Register</h3>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger">
+        <p>@message</p>
+    </div>
+}
+
+<EditForm Model=@RegistrationModel OnValidSubmit=@RegisterUser>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <InputText id="email" class="form-control" @bind-Value="RegistrationModel.Email" />
+        <ValidationMessage For=@(() => RegistrationModel.Email) />
+    </div>
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <InputText id="firstName" class="form-control" @bind-Value="RegistrationModel.FirstName" />
+        <ValidationMessage For=@(() => RegistrationModel.FirstName) />
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <InputText id="lastName" class="form-control" @bind-Value="RegistrationModel.LastName" />
+        <ValidationMessage For=@(() => RegistrationModel.LastName) />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <InputText id="password" type="password" class="form-control" @bind-Value="RegistrationModel.Password" />
+        <ValidationMessage For=@(() => RegistrationModel.Password) />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+
+</EditForm>
+
+@code {
+    public UserDto RegistrationModel = new UserDto();
+    string message = string.Empty;
+    private async Task RegisterUser()
+    {
+        try
+        {
+            await httpClient.RegisterAsync(RegistrationModel);
+            navManager.NavigateTo("/auth/login");
+        }
+        catch (ApiException ex)
+        {
+
+            message = ex.Response!;
+
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message!;
+        }
+    }
+}

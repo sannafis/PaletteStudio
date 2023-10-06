@@ -1,0 +1,60 @@
+﻿@inject IJSRuntime JsRuntime
+
+@{
+    hasNext = CurrentPage < TotalPages;
+    hasPrevious = CurrentPage > 1 && TotalPages > 1;
+}
+
+<ul class="pagination justify-content-center">
+    <li>
+        @if (hasPrevious)
+        {
+            <a class="btn page-link" @onclick=@(()=>ChangePage(CurrentPage - 1))>Previous</a>
+        }
+        else
+        {
+            <a class="btn page-link disabled" @onclick=@(()=>ChangePage(CurrentPage - 1))>Previous</a>
+        }
+    </li>
+
+    @for (int pageNum = 1; pageNum <= TotalPages; pageNum++)
+    {
+        var currentIndex = pageNum;
+
+        <li class="page-item">
+            <a class="btn page-link" @onclick=@(()=>ChangePage(currentIndex))>@currentIndex</a>
+        </li>
+    }
+
+    <li class="page-item">
+        @if (hasNext)
+        {
+            <a class="btn page-link" @onclick=@(()=>ChangePage(CurrentPage + 1))>Next</a>
+        }
+        else
+        {
+            <a class="btn page-link disabled" @onclick=@(()=>ChangePage(CurrentPage + 1))>Next</a>
+        }
+    </li>
+</ul>
+
+@code {
+    [Parameter]
+    public int CurrentPage { get; set; }
+    [Parameter]
+    public int TotalPages { get; set; }
+    [Parameter]
+    public EventCallback<PagingParameters> OnPageChange { get; set; }
+
+    private bool hasNext { get; set; }
+    private bool hasPrevious { get; set; }
+
+    private async Task ChangePage(int page)
+    {
+        await OnPageChange.InvokeAsync(new PagingParameters
+            {
+                PageNumber = page,
+                PageSize = 2
+            });
+    }
+}

@@ -34,7 +34,7 @@ namespace PaletteStudioApi.Controllers
             return Ok(paletteDtos);
         }
 
-        // GET: api/Palettes/?StartIndex=0&pageSize=15&PageNumber=1
+        // GET: api/Palettes/GetAllPublicPaged/?StartIndex=0&pageSize=15&PageNumber=1
         [HttpGet("GetAllPublicPaged")]
         public async Task<ActionResult<PagedData<PaletteReadOnlyDto>>> GetPublicPagedPalettes([FromQuery] PagingParameters pagingParameters)
         {
@@ -42,7 +42,7 @@ namespace PaletteStudioApi.Controllers
             var pagedPalettes = await _palettesRepository.PublicGetAllPagedAsync(pagingParameters);
             return Ok(pagedPalettes);
         }
-        
+
         // GET: api/Palettes/GetAll
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<PaletteReadOnlyDto>>> GetPalettes()
@@ -52,7 +52,7 @@ namespace PaletteStudioApi.Controllers
             return Ok(paletteDtos);
         }
 
-        // GET: api/Palettes/?StartIndex=0&pageSize=15&PageNumber=1
+        // GET: api/Palettes/GetAllPaged/?StartIndex=0&pageSize=15&PageNumber=1
         [HttpGet("GetAllPaged")]
         public async Task<ActionResult<PagedData<PaletteReadOnlyDto>>> GetPagedPalettes([FromQuery] PagingParameters pagingParameters)
         {
@@ -93,11 +93,7 @@ namespace PaletteStudioApi.Controllers
 
                 foreach (string colour in paletteColours)
                 {
-                    if (!await _coloursRepository.Exists(colour)) // check if colour exists, if not, create a new colour record
-                    {
-                        ColourDto newColourDto = new ColourDto { HexCode = colour };
-                        await _coloursRepository.CreateNormalizedAsync(newColourDto);
-                    }
+                    await NewColour(new ColourDto { HexCode = colour });
                 }
 
                 await _palettesRepository.UpdateFullAsync(id, paletteDto);
@@ -128,14 +124,16 @@ namespace PaletteStudioApi.Controllers
                     .Select(f => f.ColourHexCode)
                     .Prepend(p.BackgroundColourHexCode))
                 .ToList();
+            _logger.LogInformation($"Colours:");
+            foreach (var colour in paletteColours)
+            {
+                _logger.LogInformation($"{colour}");
+            }
+            
 
             foreach (string colour in paletteColours)
             {
-                if (!await _coloursRepository.Exists(colour)) // create new colour record if it does not exist
-                {
-                    ColourDto newColourDto = new ColourDto { HexCode = colour };
-                    await _coloursRepository.CreateNormalizedAsync(newColourDto);
-                }
+                await NewColour(new ColourDto { HexCode = colour });
             }
 
             var palette = await _palettesRepository.CreateAsync(paletteDto);
@@ -150,6 +148,20 @@ namespace PaletteStudioApi.Controllers
             _logger.LogInformation($"Request to {nameof(DeletePalette)} for Id {id}");
             await _palettesRepository.DeleteAsync(id);
             return NoContent();
+        }
+
+        private async Task NewColour(ColourDto colour)
+        {
+            _logger.LogInformation($"Creating New Colour: {colour.HexCode.ToUpper()}");
+            if (await _coloursRepository.Exists(colour.HexCode.ToUpper()) == false) // create new colour record if it does not exist
+            {
+                await _coloursRepository.CreateNormalizedAsync(colour);
+                _logger.LogInformation($"Succesfully Created New Colour: {colour.HexCode.ToUpper()}");
+            }
+            else
+            {
+                _logger.LogInformation($"Colour Already Exists: {colour.HexCode.ToUpper()}");
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ using PaletteStudioApi.Models.Authentication;
 using PaletteStudioApi.Services;
 using PaletteStudioApi.Repositories;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,12 +71,13 @@ builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<PaletteStudioDbContext>()
     .AddDefaultTokenProviders();
 
-var key = builder.Configuration["JwtSettings:Key"]; // Demo Purposes
+var key = builder.Configuration["JwtSettings:SecretKey"]; // Actual Key
 
-if (builder.Environment.IsDevelopment())
-{
-    key = builder.Configuration["JwtSettings:SecretKey"]; // Actual Key
-}
+
+//if (builder.Environment.IsDevelopment())
+//{
+//    key = builder.Configuration["JwtSettings:Key"]; // Demo Purposes
+//}
 
 builder.Services.AddAuthentication(options =>
 {

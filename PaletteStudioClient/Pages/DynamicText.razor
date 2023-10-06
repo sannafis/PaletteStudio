@@ -1,0 +1,56 @@
+﻿@page "/DynamicText"
+
+<div style="color:@(CompareContrast())"><strong>@Text</strong></div>
+
+@code {
+    [Parameter]
+    public string ColourOption1 { get; set; } = "#ffffff";
+
+    [Parameter]
+    public string ColourOption2 { get; set; } = "#000000";
+
+    [Parameter]
+    public string ComparisonColour { get; set; } = "#ffffff";
+
+    [Parameter]
+    public string Text { get; set; } = "Sample Text";
+
+    private ColourDto colour1 { get; set; } = new();
+    private ColourDto colour2 { get; set; } = new();
+    private ColourDto comparisonColour { get; set; } = new();
+
+    private string CurrentColour { get; set; } 
+
+    protected override void OnInitialized()
+    {
+        colour1 = new ColourDto { HexCode = ColourOption1 };
+        colour2 = new ColourDto { HexCode = ColourOption2 };
+        comparisonColour = new ColourDto { HexCode = ComparisonColour };
+        CurrentColour = CompareContrast();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            colour1 = new ColourDto { HexCode = ColourOption1 };
+            colour2 = new ColourDto { HexCode = ColourOption2 };
+            comparisonColour = new ColourDto { HexCode = ComparisonColour };
+            CurrentColour = CompareContrast();
+        }
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private string CompareContrast()
+    {
+        double contrast1 = Colour.ContrastRatio(ColourOption1, ComparisonColour);
+        double contrast2 = Colour.ContrastRatio(ColourOption2, ComparisonColour);
+
+        return contrast1 > contrast2 ? colour1.HexCode : colour2.HexCode;
+    }
+
+
+
+}

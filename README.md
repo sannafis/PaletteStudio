@@ -16,25 +16,13 @@
 will essentially consist of three parts:
 
 1. **Colour Library** ([View in Repository](https://github.com/sannafis/PaletteStudio/tree/master/ColourLibrary "View the Colour Library source code."))
-    - A Library that consists of methods and utilities related to colours that would be utilized throughout the project. 
-2. **Palette Studio API** ([View in Repository](https://github.com/sannafis/PaletteStudio/tree/master/PaletteStudioApi "View the API source code.")) ([Swagger Demo](https://palettestudioapidemo.azurewebsites.net/swagger/index.html))
+    - A Library that consists of methods and utilities related to colour conversion and manipulation that is be utilized throughout the project. 
+2. **Palette Studio Mock API** ([View in Repository](https://github.com/sannafis/PaletteStudio/tree/master/PaletteStudioApi "View the API source code.")) ([Swagger Demo](https://palettestudioapidemo.azurewebsites.net/swagger/index.html))
     - Demo Login Username: ```user@palettestudio.ca```  Password: ```P@ssw0rd```
     - A REST API using ASP.NET Core 6 and Sqlite that uses JWT Authentication for users to access their palettes and related data.
+    - This is a demo and will not be used for the actual site
 3. **Blazor Client Application (Soon)** ([More Details](#web-page-mockups))
     - A Blazor WASM (ASP.NET Core 6) client application that will use the Colour Library and API.
-
-  
-  <details>
-  
-  <summary><strong>Why Blazor?</strong></summary>
-  
-  During my studies, I was assigned a very open-ended project to choose among ASP.NET Core technologies as 
-  the base of the project. I chose to use Blazor, and mocked up the idea of a colour palette editor/grader, mainly 
-  for the use of web developers to create colour palettes that align with the contrast requirements of WCAG.
-    
-  I produced a functional but crude version of what I plan on making for this project. For the timespan I was given, it was a lot to take on, but because of that project, I have become more interested in Blazor and in making a more realized and polished version of my original idea. 
-    
-  </details>
 
 </details>
 
